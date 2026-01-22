@@ -1,0 +1,2945 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Menu NOMAD</title>
+
+  <style>
+    :root{
+      /* Minimal Luxury */
+      --bg:#070708;
+      --text:#f2f2f4;
+      --muted:rgba(255,255,255,.70);
+      --stroke:rgba(255,255,255,.08);
+      --shadow:0 16px 40px rgba(0,0,0,.45);
+      --radius:16px;
+
+      /* Accent ROSSO */
+      --accent:#E10600;
+    }
+
+    *{ margin:0; padding:0; box-sizing:border-box; }
+
+    body{
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      display:flex;
+      flex-direction:column;
+      padding-bottom:24px;
+    }
+
+    .view{
+      width:100%;
+      display:block;
+    }
+    .hidden{
+      display:none;
+    }
+
+    /* ===== LOGO ===== */
+    .logo{
+      width:100%;
+      background:#111;
+      border-bottom:1px solid var(--stroke);
+    }
+    .logo img{ width:100%; display:block; }
+
+    /* ====== SEZIONE 1: IN PRIMO PIANO – CAROUSEL ====== */
+    .featured-section{
+      width:90%;
+      margin:20px auto 14px auto;
+    }
+
+    .featured-title{
+      font-size:18px;
+      font-weight:800;
+      letter-spacing:.2px;
+      margin-bottom:10px;
+      color:var(--text);
+    }
+    .featured-title::after{
+      content:"";
+      display:block;
+      width:80px;
+      height:3px;
+      margin-top:8px;
+      border-radius:99px;
+      background:var(--accent);
+      opacity:.95;
+    }
+
+    .section-subtitle{
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 14px;
+      letter-spacing: .2px;
+    }
+
+    .featured-track{
+      display:flex;
+      gap:10px;
+      overflow-x:auto;
+      overflow-y:visible;
+      scroll-snap-type:x mandatory;
+      scroll-snap-stop:always;
+      scroll-behavior:smooth;
+      -webkit-overflow-scrolling:touch;
+      padding: 2px 4px 12px;
+      scrollbar-width:none;
+      touch-action:pan-x pan-y;
+      scroll-padding:0 calc(50% - 41%);
+    }
+    .featured-track::-webkit-scrollbar{ display:none; }
+
+    .featured-card{
+      flex:0 0 82%;
+      aspect-ratio:5 / 6;
+      border-radius:var(--radius);
+      background-size:cover;
+      background-position:center;
+      position:relative;
+      scroll-snap-align:center;
+      scroll-snap-stop:always;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      overflow:hidden;
+
+      border:1px solid var(--stroke);
+      box-shadow:var(--shadow);
+
+      transform: scale(.93) translateY(6px);
+      filter: saturate(.92) brightness(.94);
+      transition: transform .2s cubic-bezier(0.34, 1.56, 0.64, 1), filter .2s ease, box-shadow .2s ease;
+      z-index:0;
+      will-change: transform, filter;
+      cursor:pointer;
+    }
+
+    .featured-card::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(to top, rgba(0,0,0,.74), rgba(0,0,0,0) 62%),
+        radial-gradient(circle at 30% 20%, rgba(225,6,0,.18), transparent 55%);
+      pointer-events:none;
+    }
+
+    .featured-label{
+      position:relative;
+      z-index:3;
+      padding:14px;
+      width:100%;
+      text-align:center;
+      text-transform:uppercase;
+      letter-spacing:1.2px;
+      font-size:18px;
+      font-weight:900;
+      color:var(--text);
+      text-shadow:0 10px 20px rgba(0,0,0,.65);
+    }
+
+    .featured-card.is-active{
+      transform: scale(1) translateY(0);
+      filter: saturate(1.05) brightness(1);
+      box-shadow: 0 22px 60px rgba(0,0,0,.55);
+      z-index:2;
+    }
+
+    .featured-dots{
+      display:flex;
+      justify-content:center;
+      gap:8px;
+      margin-top:10px;
+      user-select:none;
+    }
+    .featured-dot{
+      width:8px; height:8px;
+      border-radius:999px;
+      background:rgba(255,255,255,.20);
+      border:1px solid rgba(255,255,255,.10);
+      transition:transform .16s ease, background .16s ease, opacity .16s ease;
+      opacity:.75;
+      cursor:pointer;
+    }
+    .featured-dot.active{
+      background:var(--accent);
+      opacity:1;
+      transform:scale(1.25);
+    }
+
+    .section-block{
+      width: 90%;
+      margin: 30px auto 0 auto;
+      position: relative;
+    }
+
+    .section-title{
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: .3px;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+
+    .section-title::after{
+      content:"";
+      display:block;
+      width: 80px;
+      height: 3px;
+      margin-top: 8px;
+      border-radius: 99px;
+      background: var(--accent);
+      opacity: .95;
+    }
+
+    /* ===== SEZIONE 2: DISTILLATI ===== */
+    .distillati-section{ width:100%; margin-top:0; }
+    .distillati-container{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
+      margin-top: 0;
+    }
+    .distillati-card{
+      width:100%;
+      aspect-ratio:2 / 1;
+      background-color:#555;
+      border-radius:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:16px;
+      font-weight:bold;
+      background-size:cover;
+      background-position:center;
+      position:relative;
+      overflow:hidden;
+
+      border:1px solid var(--stroke);
+      box-shadow:0 16px 40px rgba(0,0,0,.45);
+      text-shadow:0 8px 16px rgba(0,0,0,.65);
+      cursor:pointer;
+    }
+    .distillati-card::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to top, rgba(0,0,0,.60), rgba(0,0,0,0) 60%);
+      pointer-events:none;
+    }
+    .distillati-card a{
+      display:block;
+      width:100%;
+      height:100%;
+      position:absolute;
+      inset:0;
+      text-decoration:none;
+      color:white;
+      z-index:2;
+    }
+
+    /* ===== SEZIONE 3: BIRRE & VINI ===== */
+    .birre-vini-section{ width:100%; margin-top:0; }
+    .birre-vini-container{
+      display:flex;
+      flex-direction:row;
+      gap:10px;
+      justify-content:space-between;
+      margin-top:0;
+    }
+    .birre-card, .vini-card{
+      flex:1;
+      aspect-ratio:2 / 2;
+      background-color:#666;
+      border-radius:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:16px;
+      font-weight:bold;
+      background-size:cover;
+      background-position:center;
+      position:relative;
+      overflow:hidden;
+
+      border:1px solid var(--stroke);
+      box-shadow:0 16px 40px rgba(0,0,0,.45);
+      text-shadow:0 8px 16px rgba(0,0,0,.65);
+      cursor:pointer;
+    }
+    .birre-card::after,
+    .vini-card::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to top, rgba(0,0,0,.60), rgba(0,0,0,0) 60%);
+      pointer-events:none;
+    }
+    .birre-card a, .vini-card a{
+      display:block;
+      width:100%;
+      height:100%;
+      position:absolute;
+      inset:0;
+      text-decoration:none;
+      color:white;
+      z-index:2;
+    }
+
+    /* ===== SEZIONE 4: FOOD (card nel menu principale) ===== */
+    .food-section{
+      width:100%;
+      margin-top:0;
+      display:flex;
+      justify-content:center;
+    }
+    .food-card{
+      width:100%;
+      aspect-ratio:3 / 2;
+      background-color:#777;
+      border-radius:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      font-weight:bold;
+      background-size:cover;
+      background-position:center;
+      position:relative;
+      overflow:hidden;
+
+      border:1px solid var(--stroke);
+      box-shadow:0 16px 40px rgba(0,0,0,.45);
+      text-shadow:0 10px 18px rgba(0,0,0,.7);
+      cursor:pointer;
+    }
+    .food-card::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to top, rgba(0,0,0,.60), rgba(0,0,0,0) 60%);
+      pointer-events:none;
+    }
+    .food-card a{
+      display:block;
+      width:100%;
+      height:100%;
+      position:absolute;
+      inset:0;
+      text-decoration:none;
+      color:white;
+      z-index:2;
+    }
+
+    /* ===== DETAIL VIEWS (FOOD / WHISKY / AMARI / GIN / VINI / BIRRE / TEQUILA) ===== */
+
+    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Montserrat:wght@300;400;500&display=swap');
+
+    #food-view,
+    #whisky-view,
+    #amari-view,
+    #rum-view,
+    #vodka-view,
+    #gin-view,
+    #vini-view,
+    #birre-view,
+    #tequila-view{
+      max-width: 900px;
+      margin: 0 auto;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .food-panel-header{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      padding:12px 56px;
+      background:rgba(0,0,0,0.15);
+      z-index:1000;
+      text-align:left;
+    }
+
+    /* Back button fixed left and logo fixed right inside headers */
+    .food-panel-header .back-button{
+      position:absolute;
+      left:12px;
+      top:50%;
+      transform:translateY(-50%);
+    }
+
+    .panel-logo{
+      position:absolute;
+      right:12px;
+      top:50%;
+      transform:translateY(-50%);
+      width:48px;
+      height:48px;
+      border-radius:8px;
+      overflow:hidden;
+      border:1px solid var(--stroke);
+      background:#111;
+    }
+    .panel-logo img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    .food-panel-header .section-title{
+      font-family: 'Oswald', sans-serif;
+    }
+
+    .back-button{
+      margin-top:16px;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background:rgba(15,15,15,.9);
+      color:var(--text);
+      font-size:13px;
+      font-weight:600;
+      letter-spacing:.3px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      cursor:pointer;
+    }
+    .back-button span{
+      font-size:16px;
+      line-height:1;
+    }
+
+    .food-panel-content{
+      width:90%;
+      margin:84px auto 0 auto;
+      padding-bottom:24px;
+    }
+
+    #food-view .food-menu-header,
+    #whisky-view .food-menu-header,
+    #amari-view .food-menu-header,
+    #rum-view .food-menu-header,
+    #vodka-view .food-menu-header,
+    #gin-view .food-menu-header,
+    #vini-view .food-menu-header,
+    #birre-view .food-menu-header,
+    #tequila-view .food-menu-header{
+      text-align:center;
+      padding:10px 0 4px 0;
+    }
+    #food-view .food-menu-header h1,
+    #whisky-view .food-menu-header h1,
+    #amari-view .food-menu-header h1,
+    #rum-view .food-menu-header h1,
+    #vodka-view .food-menu-header h1,
+    #gin-view .food-menu-header h1,
+    #vini-view .food-menu-header h1,
+    #birre-view .food-menu-header h1,
+    #tequila-view .food-menu-header h1{
+      font-family:'Oswald', sans-serif;
+      color:#fff;
+      letter-spacing:2px;
+      font-size:1.4rem;
+    }
+
+    /* TABS + CONTENT FOOD */
+    #food-view .tabs{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      border-bottom:2px solid #222;
+      margin-top:8px;
+    }
+
+    #food-view .tab{
+      padding:10px 18px;
+      margin:4px;
+      border:none;
+      background:none;
+      color:#fff;
+      font-family:'Oswald', sans-serif;
+      font-size:1rem;
+      letter-spacing:1px;
+      cursor:pointer;
+      border-bottom:2px solid transparent;
+      transition:all 0.3s ease;
+    }
+
+    #food-view .tab.active{
+      border-bottom:2px solid var(--accent);
+      color:var(--accent);
+    }
+
+    #food-view .tab:hover{
+      color:var(--accent);
+    }
+
+    #food-view .content{
+      display:none;
+      padding:20px 0;
+      max-width:600px;
+      margin:0 auto;
+      animation: foodFadeIn 0.4s ease;
+    }
+
+    #food-view .content.active{
+      display:block;
+    }
+
+    @keyframes foodFadeIn{
+      from{ opacity:0; transform:translateY(10px); }
+      to{ opacity:1; transform:translateY(0); }
+    }
+
+    #food-view .section-title,
+    #whisky-view .section-title,
+    #amari-view .section-title,
+    #gin-view .section-title,
+    #vini-view .section-title,
+    #tequila-view .section-title{
+      font-family:'Oswald', sans-serif;
+      color:#fff;
+      font-size:1.2rem;
+      margin-bottom:15px;
+      border-bottom:1px solid #333;
+      padding-bottom:5px;
+    }
+
+    #food-view .item,
+    #whisky-view .item{
+      margin-bottom:25px;
+    }
+
+    #food-view .item h3,
+    #whisky-view .item h3{
+      color:var(--accent);
+      font-family:'Oswald', sans-serif;
+      letter-spacing:0.5px;
+      font-size:1.0rem;
+      margin-bottom:5px;
+    }
+
+    #food-view .item p,
+    #whisky-view .item p{
+      font-size:0.9rem;
+      color:#ccc;
+      margin:2px 0;
+      line-height:1.4;
+    }
+
+    #food-view .item span,
+    #whisky-view .item span{
+      color:#999;
+      font-size:0.8rem;
+    }
+
+    #food-view .price,
+    #whisky-view .price{
+      color:#fff;
+      font-weight:600;
+    }
+
+    /* Tabelle FOOD & WHISKY & AMARI & RUM & VODKA & GIN & VINI & TEQUILA & COGNAC */
+    #food-view table,
+    #whisky-view table,
+    #amari-view table,
+    #rum-view table,
+    #vodka-view table,
+    #gin-view table,
+    #vini-view table,
+    #tequila-view table,
+    #cognac-view table{
+      width:100%;
+      border-collapse:collapse;
+      color:#ccc;
+      font-size:0.85rem;
+      table-layout:fixed;
+    }
+
+    #food-view table td,
+    #food-view table th,
+    #whisky-view table td,
+    #whisky-view table th,
+    #amari-view table td,
+    #amari-view table th,
+    #rum-view table td,
+    #rum-view table th,
+    #vodka-view table td,
+    #vodka-view table th,
+    #gin-view table td,
+    #gin-view table th,
+    #vini-view table td,
+    #vini-view table th,
+    #tequila-view table td,
+    #tequila-view table th,
+    #cognac-view table td,
+    #cognac-view table th,
+    #softdrink-view table td,
+    #softdrink-view table th{
+      border-bottom:1px solid #222;
+      padding:8px;
+      text-align:center;
+      vertical-align:middle;
+    }
+
+    #food-view table th,
+    #whisky-view table th,
+    #amari-view table th,
+    #rum-view table th,
+    #vodka-view table th,
+    #gin-view table th,
+    #vini-view table th,
+    #tequila-view table th,
+    #cognac-view table th{
+      background-color:#111;
+      color:var(--accent);
+      font-family:'Oswald', sans-serif;
+      text-transform:uppercase;
+      letter-spacing:1px;
+    }
+
+    #food-view table td:first-child,
+    #whisky-view table td:first-child,
+    #amari-view table td:first-child,
+    #rum-view table td:first-child,
+    #vodka-view table td:first-child,
+    #gin-view table td:first-child,
+    #cognac-view table td:first-child{
+      text-align:left;
+      color:#fff;
+      width:60%;
+    }
+
+    #softdrink-view table{
+      width:100%;
+      border-collapse:collapse;
+      color:#ccc;
+      font-size:0.85rem;
+      table-layout:auto;
+    }
+
+    #softdrink-view table tr{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      border-bottom:1px solid #222;
+      padding:8px;
+    }
+
+    #softdrink-view table td:first-child{
+      text-align:left;
+      color:#fff;
+      flex:1;
+    }
+
+    #softdrink-view table td.price{
+      text-align:right;
+      color:#fff;
+      font-weight:600;
+      flex-shrink:0;
+    }
+
+    #softdrink-view table th{
+      display:flex;
+      justify-content:space-between;
+      background-color:#111;
+      color:var(--accent);
+      font-family:'Oswald', sans-serif;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      padding:8px;
+      border-bottom:1px solid #222;
+    }
+
+    #food-view table td.price,
+    #whisky-view table td.price,
+    #amari-view table td.price,
+    #rum-view table td.price,
+    #vodka-view table td.price,
+    #gin-view table td.price,
+    #tequila-view table td.price,
+    #cognac-view table td.price{
+      width:20%;
+      font-weight:600;
+      color:#fff;
+    }
+
+    #whisky-view tr:hover,
+    #amari-view tr:hover,
+    #rum-view tr:hover,
+    #vodka-view tr:hover,
+    #gin-view tr:hover,
+    #vini-view tr:hover,
+    #tequila-view tr:hover,
+    #cognac-view tr:hover,
+    #softdrink-view tr:hover{
+      background:#111;
+    }
+
+    #softdrink-view table small{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      margin-top:3px;
+    }
+
+    /* TABS WHISKY (2 per riga) */
+    #whisky-view .tabs{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:6px;
+      width:100%;
+      padding:8px 0;
+      border-bottom:2px solid #222;
+    }
+
+    #whisky-view .tab{
+      flex:1 1 calc(50% - 12px);
+      min-width:160px;
+      padding:10px 0;
+      margin:2px;
+      background:none;
+      border:none;
+      color:#fff;
+      font-family:'Oswald',sans-serif;
+      font-size:0.95rem;
+      letter-spacing:1px;
+      cursor:pointer;
+      border-bottom:2px solid transparent;
+      transition:.3s;
+      text-align:center;
+    }
+
+    #whisky-view .tab.active{
+      border-bottom:2px solid var(--accent);
+      color:var(--accent);
+    }
+
+    #whisky-view .tab:hover{
+      color:var(--accent);
+    }
+
+    #whisky-view .content{
+      display:none;
+      padding:20px 0;
+      max-width:900px;
+      width:100%;
+      margin:0 auto;
+      animation: foodFadeIn .4s ease;
+    }
+
+    #whisky-view .content.active{
+      display:block;
+    }
+
+    /* AMARI TABS */
+    #amari-view .tabs{
+      display:flex;
+      justify-content:center;
+      border-bottom:2px solid #222;
+      flex-wrap:wrap;
+      width:100%;
+      max-width:700px;
+      margin:0 auto;
+    }
+
+    #amari-view .tab{
+      padding:12px 20px;
+      margin:4px;
+      border:none;
+      background:none;
+      color:#fff;
+      font-family:'Oswald', sans-serif;
+      font-size:1rem;
+      letter-spacing:1px;
+      cursor:pointer;
+      border-bottom:2px solid transparent;
+      transition:all 0.3s ease;
+      flex:1;
+      text-align:center;
+    }
+
+    #amari-view .tab.active{
+      border-bottom:2px solid var(--accent);
+      color:var(--accent);
+    }
+
+    #amari-view .tab:hover{
+      color:var(--accent);
+    }
+
+    #amari-view .content{
+      display:none;
+      padding:20px 0;
+      max-width:700px;
+      width:100%;
+      margin:0 auto;
+      animation: foodFadeIn 0.4s ease;
+    }
+
+    #amari-view .content.active{
+      display:block;
+    }
+
+    /* GIN + RUM + VODKA + COGNAC TABS */
+    #gin-view .tabs,
+    #rum-view .tabs,
+    #vodka-view .tabs,
+    #cognac-view .tabs{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:6px;
+      width:100%;
+      max-width:900px;
+      border-bottom:2px solid #222;
+      padding:6px 0;
+      margin:0 auto;
+    }
+
+    #gin-view .tab,
+    #rum-view .tab,
+    #vodka-view .tab,
+    #cognac-view .tab{
+      flex:1 1 calc(50% - 12px);
+      min-width:160px;
+      padding:10px 0;
+      margin:2px;
+      background:none;
+      border:none;
+      color:#fff;
+      font-family:'Oswald', sans-serif;
+      font-size:0.9rem;
+      letter-spacing:1px;
+      cursor:pointer;
+      border-bottom:2px solid transparent;
+      transition:all 0.3s ease;
+      text-align:center;
+    }
+
+    #gin-view .tab.active,
+    #rum-view .tab.active,
+    #vodka-view .tab.active,
+    #cognac-view .tab.active{
+      border-bottom:2px solid var(--accent);
+      color:var(--accent);
+    }
+
+    #gin-view .tab:hover,
+    #rum-view .tab:hover,
+    #vodka-view .tab:hover,
+    #cognac-view .tab:hover{
+      color:var(--accent);
+    }
+
+    #gin-view .content,
+    #rum-view .content,
+    #vodka-view .content,
+    #cognac-view .content{
+      display:none;
+      padding:20px 0;
+      max-width:900px;
+      width:100%;
+      margin:0 auto;
+      animation: foodFadeIn 0.4s ease;
+    }
+
+    #gin-view .content.active,
+    #rum-view .content.active,
+    #vodka-view .content.active,
+    #cognac-view .content.active{
+      display:block;
+    }
+
+    /* VINI TABS */
+    #vini-view .tabs{
+      display:flex;
+      justify-content:center;
+      border-bottom:2px solid #222;
+      flex-wrap:wrap;
+      width:100%;
+      max-width:700px;
+      margin:0 auto;
+    }
+
+    #vini-view .tab{
+      padding:12px 20px;
+      margin:4px;
+      border:none;
+      background:none;
+      color:#fff;
+      font-family:'Oswald', sans-serif;
+      font-size:1rem;
+      letter-spacing:1px;
+      cursor:pointer;
+      border-bottom:2px solid transparent;
+      transition:all 0.3s ease;
+      flex:1;
+      text-align:center;
+    }
+
+    #vini-view .tab.active{
+      border-bottom:2px solid var(--accent);
+      color:var(--accent);
+    }
+
+    #vini-view .tab:hover{
+      color:var(--accent);
+    }
+
+    #vini-view .content{
+      display:none;
+      padding:20px 0;
+      max-width:700px;
+      width:100%;
+      margin:0 auto;
+      animation: foodFadeIn 0.4s ease;
+    }
+
+    #vini-view .content.active{
+      display:block;
+    }
+
+    #vini-view table td{
+      padding:16px 10px;
+      border-bottom:1px solid #222;
+      text-align:center;
+    }
+    #vini-view td strong{
+      font-family:'Oswald',sans-serif;
+      font-size:1.05rem;
+      letter-spacing:.5px;
+      color:#fff;
+      display:block;
+    }
+    #vini-view .details{
+      font-size:0.85rem;
+      color:#aaa;
+      display:block;
+      margin-top:4px;
+      text-align:center;
+    }
+
+    /* BIRRE VIEW */
+    #birre-view .content{
+      padding:20px 0;
+      max-width:700px;
+      width:100%;
+      margin:0 auto;
+      animation: foodFadeIn 0.4s ease;
+    }
+
+    #birre-view .section-title{
+      font-family:'Oswald', sans-serif;
+      color:#fff;
+      font-size:1.4rem;
+      margin-bottom:15px;
+      border-bottom:1px solid #333;
+      padding-bottom:5px;
+      text-align:center;
+      letter-spacing:1px;
+    }
+
+    #birre-view table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:10px;
+      font-size:1rem;
+      color:#ccc;
+      table-layout:fixed;
+    }
+
+    #birre-view th, #birre-view td{
+      padding:12px 10px;
+      border-bottom:1px solid #222;
+      vertical-align:middle;
+    }
+
+    #birre-view th{
+      font-family:'Oswald', sans-serif;
+      color:var(--accent);
+      text-transform:uppercase;
+      font-weight:500;
+      background-color:#111;
+      letter-spacing:1px;
+      text-align:center;
+    }
+
+    #birre-view td{
+      text-align:left;
+    }
+
+    #birre-view td.price{
+      text-align:right;
+      font-weight:600;
+      color:#fff;
+      white-space:nowrap;
+    }
+
+    #birre-view .details{
+      font-size:0.85rem;
+      color:#aaa;
+      line-height:1.3;
+    }
+
+    /* TEQUILA VIEW – tabs stile whisky */
+    #tequila-view .tabs{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:6px;
+      width:100%;
+      padding:8px 0;
+      border-bottom:2px solid #222;
+    }
+
+    #tequila-view .tab{
+      flex:1 1 calc(50% - 12px);
+      min-width:160px;
+      padding:10px 0;
+      margin:2px;
+      background:none;
+      border:none;
+      color:#fff;
+      font-family:'Oswald',sans-serif;
+      font-size:0.95rem;
+      letter-spacing:1px;
+      cursor:pointer;
+      border-bottom:2px solid transparent;
+      transition:.3s;
+      text-align:center;
+    }
+
+    #tequila-view .tab.active{
+      border-bottom:2px solid var(--accent);
+      color:var(--accent);
+    }
+
+    #tequila-view .tab:hover{
+      color:var(--accent);
+    }
+
+    #tequila-view .content{
+      display:none;
+      padding:20px 0;
+      max-width:900px;
+      width:100%;
+      margin:0 auto;
+      animation: foodFadeIn .4s ease;
+    }
+
+    #tequila-view .content.active{
+      display:block;
+    }
+
+    /* ===== 7 MERAVIGLIE GALLERY ===== */
+    #meraviglie-view{
+      width:100%;
+      height:100vh;
+      display:none;
+      flex-direction:column;
+      background:var(--bg);
+      position:fixed;
+      top:0;
+      left:0;
+      z-index:50;
+    }
+
+    #meraviglie-view:not(.hidden){
+      display:flex;
+    }
+
+    .meraviglie-header{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      padding:12px 56px;
+      background:rgba(0,0,0,0.15);
+      z-index:1000;
+      text-align:left;
+    }
+
+    .meraviglie-gallery{
+      width:100%;
+      height:100%;
+      overflow-y:scroll;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+      margin-top:0;
+    }
+
+    .meraviglie-gallery::-webkit-scrollbar{
+      display:none;
+    }
+
+    /* ===== SPRITZ GALLERY ===== */
+    #spritz-view{
+      width:100%;
+      height:100vh;
+      display:none;
+      flex-direction:column;
+      background:var(--bg);
+      position:fixed;
+      top:0;
+      left:0;
+      z-index:50;
+    }
+
+    #spritz-view:not(.hidden){
+      display:flex;
+    }
+
+    .spritz-header{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      padding:12px 56px;
+      background:rgba(0,0,0,0.15);
+      z-index:1000;
+      text-align:left;
+    }
+
+    .spritz-gallery{
+      width:100%;
+      height:100%;
+      overflow-y:scroll;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+      margin-top:0;
+    }
+
+    .spritz-gallery::-webkit-scrollbar{
+      display:none;
+    }
+
+    .meraviglie-gallery img{
+      width:100%;
+      height:auto;
+      display:block;
+      margin:0;
+      padding:0;
+    }
+
+    .spritz-gallery img{
+      width:100%;
+      height:auto;
+      display:block;
+      margin:0;
+      padding:0;
+    }
+
+    /* ===== ANALCOLICI GALLERY ===== */
+    #analcolici-view{
+      width:100%;
+      height:100vh;
+      display:none;
+      flex-direction:column;
+      background:var(--bg);
+      position:fixed;
+      top:0;
+      left:0;
+      z-index:50;
+    }
+
+    #analcolici-view:not(.hidden){
+      display:flex;
+    }
+
+    .analcolici-header{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      padding:12px 56px;
+      background:rgba(0,0,0,0.15);
+      z-index:1000;
+      text-align:left;
+    }
+
+    .analcolici-gallery{
+      width:100%;
+      height:100%;
+      overflow-y:scroll;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+      margin-top:0;
+    }
+
+    .analcolici-gallery::-webkit-scrollbar{
+      display:none;
+    }
+
+    .analcolici-gallery img{
+      width:100%;
+      height:auto;
+      display:block;
+      margin:0;
+      padding:0;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- ========== LOGO ========== -->
+  <div class="logo">
+    <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1747947048/NOMAD_LOGO_2_1_yokhs8.jpg" alt="NOMAD">
+  </div>
+
+  <!-- ========== 7 MERAVIGLIE VIEW ========== -->
+  <div id="meraviglie-view" class="view hidden">
+    <div class="meraviglie-header">
+        <button class="back-button" id="back-meraviglie">
+          <span>←</span> Torna al menu
+        </button>
+        <div class="panel-logo"><img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1739885813/NOMAD_logo_j0ahay.png" alt="NOMAD"></div>
+    </div>
+    <div class="meraviglie-gallery">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1768931250/7_1_Descrizione_jri5sp.jpg" alt="Meraviglia 1">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1768931250/Abraco_oxx1aw.jpg" alt="Meraviglia 2">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1768931250/BAI_LONG_er4qqk.jpg" alt="Meraviglia 3">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1768931252/Gladiatore_mqv5o8.jpg" alt="Meraviglia 4">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1768931253/INTI_zwxnh7.jpg" alt="Meraviglia 5">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1768931249/KUKULKAN_en8py3.jpg" alt="Meraviglia 6">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1768931249/NABATEA_m4nqsu.jpg" alt="Meraviglia 7">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1768931249/SAMSARA_zjscfi.jpg" alt="Meraviglia 8">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1768931249/NOMAD_o43i8i.jpg" alt="Meraviglia 9">
+    </div>
+  </div>
+
+  <!-- ========== SPRITZ VIEW ========== -->
+  <div id="spritz-view" class="view hidden">
+    <div class="spritz-header">
+        <button class="back-button" id="back-spritz">
+          <span>←</span> Torna al menu
+        </button>
+        <div class="panel-logo"><img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1739885813/NOMAD_logo_j0ahay.png" alt="NOMAD"></div>
+    </div>
+    <div class="spritz-gallery">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769008682/Americano_y4rkkx.jpg" alt="Spritz 1">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769008676/Hugo_vbvjva.jpg" alt="Spritz 2">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769008676/Limoncello_ziykq5.jpg" alt="Spritz 3">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769008676/Montenegro_hvnc0y.jpg" alt="Spritz 4">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769008676/Cynar_udd1zn.jpg" alt="Spritz 5">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769008678/Select_hixfkz.jpg" alt="Spritz 6">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769008679/Sorbole_rwah01.jpg" alt="Spritz 7">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769008680/St-Germain_p2lymi.jpg" alt="Spritz 8">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769008681/Venturo_sgbcbt.jpg" alt="Spritz 9">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769008677/Rouge_dcfyi1.jpg" alt="Spritz 10">
+    </div>
+  </div>
+
+  <!-- ========== ANALCOLICI VIEW ========== -->
+  <div id="analcolici-view" class="view hidden">
+    <div class="analcolici-header">
+        <button class="back-button" id="back-analcolici">
+          <span>←</span> Torna al menu
+        </button>
+        <div class="panel-logo"><img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1739885813/NOMAD_logo_j0ahay.png" alt="NOMAD"></div>
+    </div>
+    <div class="analcolici-gallery">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769030367/Mediterraneo_ltiuax.png" alt="Analcolico 1">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769030371/Nojito_ly3kts.png" alt="Analcolico 2">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769081007/Shirley_temple_2.0_vauyf9.png" alt="Analcolico 3">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769030368/Virgin_Pina_Colada_nvypea.png" alt="Analcolico 4">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769030369/London_Mule_0.0_pxpu4t.png" alt="Analcolico 5">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769030373/Virgin_Bloody_Mary_ynffti.png" alt="Analcolico 6">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769081015/San_francisco_2.0_ayuwuc.png" alt="Analcolico 7">
+    </div>
+  </div>
+
+  <!-- ========== VIEW PRINCIPALE (INDEX) ========== -->
+  <div id="main-view" class="view">
+
+    <!-- ========== SEZIONE 1 – IN PRIMO PIANO ========== -->
+    <div class="featured-section">
+      <div class="featured-title">In primo piano</div>
+      <div class="section-subtitle">Le selezioni signature del NOMAD</div>
+
+      <div class="featured-track">
+        <div class="featured-card" data-section="7meraviglie" style="background-image:url('https://res.cloudinary.com/dwalnukl0/image/upload/v1747947048/Odyssey_hxwjpf.jpg')">
+          <div class="featured-label">7 Meraviglie</div>
+        </div>
+
+        <div class="featured-card" data-section="spritz" style="background-image:url('https://res.cloudinary.com/dwalnukl0/image/upload/v1769009733/Copertina_spritz_nuuqrj.png')">
+          <div class="featured-label">Menu Spritz</div>
+        </div>
+
+        <div class="featured-card" data-section="analcolici" style="background-image:url('https://res.cloudinary.com/dwalnukl0/image/upload/v1769032741/Copertina_cocktail_analcolici_vwibch.png')">
+          <div class="featured-label">Cocktail Analcolici</div>
+        </div>
+
+        <div class="featured-card" data-section="softdrink" style="background-image:url('https://res.cloudinary.com/dwalnukl0/image/upload/v1769032740/copertina_soft_drink_dbvjok.png')">
+          <div class="featured-label">Soft Drink</div>
+        </div>
+      </div>
+
+      <div class="featured-dots" aria-label="Indicatori scorrimento"></div>
+    </div>
+
+    <!-- ========== SEZIONE 2 – DISTILLATI ========== -->
+    <div class="section-block">
+      <div class="section-title">Menu Distillati</div>
+      <div class="section-subtitle">Spirits selezionati da tutto il mondo</div>
+
+      <div class="distillati-section">
+        <div class="distillati-container">
+          <div class="distillati-card" id="whisky-card-main" style="background-image:url('https://res.cloudinary.com/dwalnukl0/image/upload/v1747947051/whiskey_asescc.jpg')">
+            <a href="javascript:void(0)"></a>Whisky
+          </div>
+          <div class="distillati-card" id="rum-card-main" style="background-image:url('https://res.cloudinary.com/dwalnukl0/image/upload/v1747947049/rum_uqcjhj.jpg')">
+            <a href="#"></a>Rum
+          </div>
+          <div class="distillati-card" id="gin-card-main" style="background-image:url('https://res.cloudinary.com/dwalnukl0/image/upload/v1739386802/NOMAD%20MENU/pdqtgslprhz7bamaj7zk.jpg')">
+            <a href="javascript:void(0)"></a>Gin
+          </div>
+          <div class="distillati-card" id="vodka-card-main" style="background-image:url('https://res.cloudinary.com/dwalnukl0/image/upload/v1747947051/vodka_kwjehe.jpg')">
+            <a href="#"></a>Vodka
+          </div>
+          <div class="distillati-card" id="tequila-card-main" style="background-image:url('https://res.cloudinary.com/dwalnukl0/image/upload/v1739456838/AGAVE_BLU_zvatkp.jpg')">
+            <a href="javascript:void(0)"></a>Tequila & Mezcal
+          </div>
+          <div class="distillati-card" id="cognac-card-main" style="background-image:url('https://res.cloudinary.com/dwalnukl0/image/upload/v1747947044/brandy_stuso4.jpg')">
+            <a href="#"></a>Cognac
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card AMARI full width -->
+    <div class="section-block" style="margin-top:12px;">
+      <div style="width:100%; display:flex; justify-content:center;">
+           <div class="distillati-card"
+             id="amari-card-main"
+             style="width:100%; aspect-ratio:4 / 1; background-image:url('https://res.cloudinary.com/dwalnukl0/image/upload/v1769083485/Copertina_Amari_jl9xom.png'); font-size:18px;">
+          <a href="javascript:void(0)"></a>
+          Amari &amp; Digestivi
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== SEZIONE 3 – BIRRE & VINI ========== -->
+    <div class="section-block">
+      <div class="section-title">Birre &amp; Vini</div>
+      <div class="section-subtitle">Artigianali, etichette selezionate e bollicine</div>
+
+      <div class="birre-vini-section">
+        <div class="birre-vini-container">
+          <div class="birre-card" id="birre-card-main" style="background-image:url('https://res.cloudinary.com/dwalnukl0/image/upload/v1769082906/copertina_birre_ybfrhy.jpg')">
+            <a href="javascript:void(0)"></a>
+          </div>
+          <div class="vini-card" id="vini-card-main" style="background-image:url('https://res.cloudinary.com/dwalnukl0/image/upload/v1739887271/vino_menu_saygut.jpg')">
+            <a href="javascript:void(0)"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== SEZIONE 4 – FOOD (CARD) ========== -->
+    <div class="section-block">
+      <div class="section-title">Food</div>
+      <div class="section-subtitle">Perfetti da condividere, ideali con i cocktail</div>
+
+      <div class="food-section">
+           <div class="food-card" id="food-card-main"
+             style="background-image:url('https://res.cloudinary.com/dwalnukl0/image/upload/v1769087833/copertina_food_3_bozhq2.jpg')">
+          <a href="javascript:void(0)"></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- ========== FINE INDEX ========== -->
+
+  <!-- ========== FOOD VIEW ========== -->
+  <div id="food-view" class="view hidden">
+    <div class="food-panel-header">
+      <div class="section-title">Food</div>
+      <button class="back-button" id="back-to-menu">
+        <span>←</span> Torna al menu principale
+      </button>
+      <div class="panel-logo"><img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1739885813/NOMAD_logo_j0ahay.png" alt="NOMAD"></div>
+    </div>
+
+    <div class="food-panel-content">
+      <div class="food-menu-header">
+        <h1>🍴 NOMAD FOOD MENU</h1>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="openFoodTab('burgers')">BURGERS</button>
+        <button class="tab" onclick="openFoodTab('tartare')">TARTÀRE</button>
+        <button class="tab" onclick="openFoodTab('bruschette')">BRUSCHETTE</button>
+        <button class="tab" onclick="openFoodTab('aperitivo')">APERITIVO</button>
+        <button class="tab" onclick="openFoodTab('allergeni')">ALLERGENI</button>
+      </div>
+
+      <!-- BURGERS -->
+      <div id="burgers" class="content active">
+        <h2 class="section-title">BURGERS</h2>
+        <div class="item">
+          <h3>TARTÀRE BURGER <span class="price">| 14,00 €</span></h3>
+          <p>130g di battuta piemontese, senape di digione, tuorlo d’uovo, salsa di soia, insalata, pomodori secchi, scaglie di grana</p>
+          <p><em>130g of finely chopped Piedmontese beef, Dijon mustard, egg yolk, soy sauce, lettuce, sun-dried tomatoes, Parmigiano shavings.</em></p>
+          <span>Allergeni: 1, 3, 6, 7, 10</span>
+        </div>
+
+        <div class="item">
+          <h3>SMASH BURGER <span class="price">| 14,00 €</span></h3>
+          <p>180g di carne piemontese, salsa barbecue, salsa cheddar, pomodoro, insalata, bacon</p>
+          <p><em>180g of Piedmontese beef, barbecue sauce, cheddar sauce, tomato, lettuce, bacon.</em></p>
+          <span>Allergeni: 1, 3</span>
+        </div>
+      </div>
+
+      <!-- TARTARE -->
+      <div id="tartare" class="content">
+        <h2 class="section-title">TARTÀRE</h2>
+        <div class="item">
+          <h3>TARTÀRE ALLA FRANCESE <span class="price">| 14,00 €</span></h3>
+          <p>130g di battuta piemontese, senape di digione, sale, pepe, olio evo, salsa di soia, tuorlo d’uovo</p>
+          <p><em>130g of finely chopped Piedmontese beef, Dijon mustard, salt, pepper, olive oil, soy sauce, egg yolk.</em></p>
+          <span>Allergeni: 3, 6, 10</span>
+        </div>
+
+        <div class="item">
+          <h3>TARTÀRE MEDITERRANEA <span class="price">| 14,00 €</span></h3>
+          <p>130g di battuta piemontese, pomodori secchi, capperi, acciughe, stracciatella, scaglie di grana</p>
+          <p><em>130g of finely chopped Piedmontese beef, sun-dried tomatoes, capers, anchovies, stracciatella, Parmigiano shavings.</em></p>
+          <span>Allergeni: 4, 7</span>
+        </div>
+      </div>
+
+      <!-- BRUSCHETTE -->
+      <div id="bruschette" class="content">
+        <h2 class="section-title">BRUSCHETTE</h2>
+
+        <div class="item">
+          <h3>BRUSCHETTA MEDITERRANEA <span class="price">| 8,00 €</span></h3>
+          <p>Pomodorini, aglio, origano, stracciatella</p>
+          <p><em>Cherry tomatoes, garlic, oregano, stracciatella.</em></p>
+          <span>Allergeni: 1, 7</span>
+        </div>
+
+        <div class="item">
+          <h3>BRUSCHETTA CANTABRICO <span class="price">| 8,00 €</span></h3>
+          <p>Stracciatella, acciughe, erba cipollina</p>
+          <p><em>Stracciatella, anchovies, chives.</em></p>
+          <span>Allergeni: 1, 4, 7</span>
+        </div>
+
+        <div class="item">
+          <h3>BRUSCHETTA MORTAZZA <span class="price">| 8,00 €</span></h3>
+          <p>Mortadella, stracciatella, granella di pistacchio</p>
+          <p><em>Mortadella, stracciatella, crushed pistachios.</em></p>
+          <span>Allergeni: 1, 7, 8</span>
+        </div>
+
+        <div class="item">
+          <h3>BRUSCHETTA PESTO DI PRÀ <span class="price">| 8,00 €</span></h3>
+          <p>Basilico, olio evo, parmigiano, sale, aglio</p>
+          <p><em>Basil, olive oil, Parmigiano, salt, garlic.</em></p>
+          <span>Allergeni: 1, 7</span>
+        </div>
+      </div>
+
+      <!-- APERITIVO -->
+      <div id="aperitivo" class="content">
+        <h2 class="section-title">APERITIVO</h2>
+
+        <div class="item">
+          <h3>TRIS DI TAPAS DEL GIORNO <span class="price">| 12,00 €</span></h3>
+          <p>Tris of Daily Tapas</p>
+          <span>Allergeni: 1, 3, 7, 8</span>
+        </div>
+
+        <div class="item">
+          <h3>SELEZIONE DI SALUMI E FORMAGGI <span class="price">| 7,00 €</span></h3>
+          <p>Selection of Cold Cuts and Cheeses</p>
+          <span>Allergeni: 1, 7</span>
+        </div>
+      </div>
+
+      <!-- ALLERGENI -->
+      <div id="allergeni" class="content">
+        <h2 class="section-title">TABELLA ALLERGENI</h2>
+        <table>
+          <tr><th>#</th><th>Descrizione</th></tr>
+          <tr><td>1</td><td>Cereali contenenti glutine (grano, segale, orzo, avena, farro, kamut)</td></tr>
+          <tr><td>2</td><td>Crostacei e prodotti a base di crostacei</td></tr>
+          <tr><td>3</td><td>Uova e prodotti a base di uova</td></tr>
+          <tr><td>4</td><td>Pesce e prodotti a base di pesce</td></tr>
+          <tr><td>5</td><td>Arachidi e prodotti a base di arachidi</td></tr>
+          <tr><td>6</td><td>Soia e prodotti a base di soia</td></tr>
+          <tr><td>7</td><td>Latte e prodotti a base di latte</td></tr>
+          <tr><td>8</td><td>Frutta a guscio e loro prodotti (mandorle, nocciole, noci, pistacchi, ecc.)</td></tr>
+          <tr><td>9</td><td>Sedano e prodotti a base di sedano</td></tr>
+          <tr><td>10</td><td>Senape e prodotti a base di senape</td></tr>
+          <tr><td>11</td><td>Semi di sesamo e prodotti a base di sesamo</td></tr>
+          <tr><td>12</td><td>Solfiti in concentrazioni superiori a 10mg/kg</td></tr>
+          <tr><td>13</td><td>Lupini e prodotti a base di lupini</td></tr>
+          <tr><td>14</td><td>Molluschi e prodotti a base di molluschi</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== WHISKY VIEW ========== -->
+  <div id="whisky-view" class="view hidden">
+    <div class="food-panel-header">
+      <div class="section-title">Whisky</div>
+      <button class="back-button" id="back-to-menu-whisky">
+        <span>←</span> Torna al menu principale
+      </button>
+      <div class="panel-logo"><img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1739885813/NOMAD_logo_j0ahay.png" alt="NOMAD"></div>
+    </div>
+
+    <div class="food-panel-content">
+      <div class="food-menu-header">
+        <h1>🥃 NOMAD – WHISKY SELECTION</h1>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="openWhiskyTab('scotch_single')">SCOTCH SINGLE MALT</button>
+        <button class="tab" onclick="openWhiskyTab('scotch_blend')">SCOTCH BLENDED</button>
+        <button class="tab" onclick="openWhiskyTab('irish')">IRISH WHISKEY</button>
+        <button class="tab" onclick="openWhiskyTab('american_bourbon')">AMERICAN BOURBON / TENNESSEE</button>
+        <button class="tab" onclick="openWhiskyTab('american_rye')">RYE &amp; CORN WHISKEY</button>
+        <button class="tab" onclick="openWhiskyTab('japanese')">JAPANESE WHISKY</button>
+      </div>
+
+      <!-- 1. SCOTCH SINGLE MALT -->
+      <div id="scotch_single" class="content active">
+        <h2 class="section-title">SCOTCH SINGLE MALT</h2>
+        <table>
+          <tr><th>Nome</th><th>50 ml</th><th>Drink</th></tr>
+          <tr><td>Aberfeldy</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+          <tr><td>Ardbeg</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Caol Ila</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Glan Cadam</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Glenfiddich</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Lagavulin 16</td><td class="price">15 €</td><td class="price">17 €</td></tr>
+          <tr><td>Lagavulin 8</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Laphroaig 10Y</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+          <tr><td>Laphroaig Oak Select</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Laphroaig Quarter Cask</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Laphroaig Select</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Oban 14</td><td class="price">13 €</td><td class="price">15 €</td></tr>
+          <tr><td>Oban Little Bay</td><td class="price">11 €</td><td class="price">13 €</td></tr>
+          <tr><td>Peat’s Beast</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Talisker 10Y</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+          <tr><td>Talisker Port Ruighe</td><td class="price">11 €</td><td class="price">13 €</td></tr>
+          <tr><td>Talisker Skye</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Talisker Storm</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+          <tr><td>The Balvenie 12</td><td class="price">13 €</td><td class="price">15 €</td></tr>
+          <tr><td>The Macallan Double Cask</td><td class="price">14 €</td><td class="price">16 €</td></tr>
+          <tr><td>The Macallan Single Cask</td><td class="price">14 €</td><td class="price">16 €</td></tr>
+          <tr><td>The Macallan Triple Cask</td><td class="price">14 €</td><td class="price">16 €</td></tr>
+          <tr><td>Muja Rosapetra</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+          <tr><td>Muja</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+        </table>
+      </div>
+
+      <!-- 2. SCOTCH BLENDED -->
+      <div id="scotch_blend" class="content">
+        <h2 class="section-title">SCOTCH BLENDED</h2>
+        <table>
+          <tr><th>Nome</th><th>50 ml</th><th>Drink</th></tr>
+          <tr><td>J.W. Blue Label</td><td class="price">20 €</td><td class="price">22 €</td></tr>
+          <tr><td>J.W. Red Label</td><td class="price">7 €</td><td class="price">9 €</td></tr>
+          <tr><td>J.W. Black Label 12</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>J.W. Double Black</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+          <tr><td>J.W. Gold Label</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>J.W. Green Label</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Copper Dog</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+          <tr><td>Monkey Shoulder Original</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Monkey Shoulder Smokey</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+        </table>
+      </div>
+
+      <!-- 3. IRISH WHISKEY -->
+      <div id="irish" class="content">
+        <h2 class="section-title">IRISH WHISKEY</h2>
+        <table>
+          <tr><th>Nome</th><th>50 ml</th><th>Drink</th></tr>
+          <tr><td>Bushmills</td><td class="price">7 €</td><td class="price">9 €</td></tr>
+          <tr><td>Bushmills Black Bush</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Jameson</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Jameson Black Barrel</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+          <tr><td>Roe &amp; Co</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+        </table>
+      </div>
+
+      <!-- 4. AMERICAN BOURBON / TENNESSEE -->
+      <div id="american_bourbon" class="content">
+        <h2 class="section-title">AMERICAN BOURBON / TENNESSEE</h2>
+        <table>
+          <tr><th>Nome</th><th>50 ml</th><th>Drink</th></tr>
+          <tr><td>Bulleit Bourbon</td><td class="price">7 €</td><td class="price">9 €</td></tr>
+          <tr><td>Bulleit 10</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Gentleman Jack</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+          <tr><td>Jack Daniel's Single Barrel Select</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Maker's Mark</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+          <tr><td>Platte Valley</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Wild Turkey Bourbon</td><td class="price">15 €</td><td class="price">17 €</td></tr>
+          <tr><td>Wild Turkey 101</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Woodford Reserve</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+        </table>
+      </div>
+
+      <!-- 5. RYE & CORN WHISKEY -->
+      <div id="american_rye" class="content">
+        <h2 class="section-title">RYE &amp; CORN WHISKEY</h2>
+        <table>
+          <tr><th>Nome</th><th>50 ml</th><th>Drink</th></tr>
+          <tr><td>Bulleit Rye</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Jack Daniel's Single Barrel Rye</td><td class="price">11 €</td><td class="price">13 €</td></tr>
+          <tr><td>Knob Creek 9</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Knob Creek Rye</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Wild Turkey Rye</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Willett</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+        </table>
+      </div>
+
+      <!-- 6. JAPANESE WHISKY -->
+      <div id="japanese" class="content">
+        <h2 class="section-title">JAPANESE WHISKY</h2>
+        <table>
+          <tr><th>Nome</th><th>50 ml</th><th>Drink</th></tr>
+          <tr><td>Hibiki</td><td class="price">18 €</td><td class="price">20 €</td></tr>
+          <tr><td>Kensei</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Mars Maltage Cosmo</td><td class="price">11 €</td><td class="price">13 €</td></tr>
+          <tr><td>Nikka From The Barrel</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+          <tr><td>Nikka Super</td><td class="price">11 €</td><td class="price">13 €</td></tr>
+          <tr><td>Toki Suntory</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Tokinoka</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Tottori</td><td class="price">7 €</td><td class="price">9 €</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========== COGNAC VIEW ========== -->
+  <div id="cognac-view" class="view hidden">
+    <div class="food-panel-header">
+      <div class="section-title">Cognac</div>
+      <button class="back-button" id="back-to-menu-cognac">
+        <span></span> Torna al menu principale
+      </button>
+      <div class="panel-logo"><img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1739885813/NOMAD_logo_j0ahay.png" alt="NOMAD"></div>
+    </div>
+
+    <div class="food-panel-content">
+      <div class="food-menu-header">
+        <h1>🥃 COGNAC – SPIRITO DI FRANCIA</h1>
+        <p class="section-subtitle" style="text-align:center; margin-top:6px;">
+          Distillati d'uva invecchiati, pensati per chiudere la serata con calma e stile.
+        </p>
+      </div>
+
+      <!-- TABS COGNAC -->
+      <div class="tabs">
+        <button class="tab active" onclick="openCognacTab('cognac-vs')">VS – GIOVANI & DRINK</button>
+        <button class="tab" onclick="openCognacTab('cognac-vsop')">VSOP – EQUILIBRIO & MORBIDEZZA</button>
+        <button class="tab" onclick="openCognacTab('cognac-xo')">XO – SOLO LISCIO</button>
+      </div>
+
+      <!-- VS -->
+      <div id="cognac-vs" class="content active">
+        <h2 class="section-title">COGNAC – VS</h2>
+        <p class="section-subtitle">
+          Giovani, vivaci, perfetti sia lisci che in cocktail: ideali per chi vuole conoscere il mondo Cognac.
+        </p>
+        <table>
+          <tr>
+            <th>Etichetta</th>
+            <th>50ml</th>
+            <th>Cocktail</th>
+          </tr>
+          <tr>
+            <td>Hennessy VS</td>
+            <td class="price">10 €</td>
+            <td class="price">12 €</td>
+          </tr>
+          <tr>
+            <td>Courvoisier VS</td>
+            <td class="price">9 €</td>
+            <td class="price">11 €</td>
+          </tr>
+          <tr>
+            <td>Martell VS</td>
+            <td class="price">9 €</td>
+            <td class="price">11 €</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- VSOP -->
+      <div id="cognac-vsop" class="content">
+        <h2 class="section-title">COGNAC – VSOP</h2>
+        <p class="section-subtitle">
+          Più tempo in botte, più profondità: per chi cerca un sorso rotondo, avvolgente, da degustare con calma.
+        </p>
+        <table>
+          <tr>
+            <th>Etichetta</th>
+            <th>50ml</th>
+            <th>Cocktail</th>
+          </tr>
+          <tr>
+            <td>Rémy Martin VSOP</td>
+            <td class="price">12 €</td>
+            <td class="price">14 €</td>
+          </tr>
+          <tr>
+            <td>Camus VSOP</td>
+            <td class="price">13 €</td>
+            <td class="price">15 €</td>
+          </tr>
+        </table>
+
+        <p style="font-size:0.8rem; color:#aaa; margin-top:10px;">
+          Note generali: frutta secca, spezie dolci, legno elegante. Ottimi lisci o in cocktail più strutturati.
+        </p>
+      </div>
+
+      <!-- XO -->
+      <div id="cognac-xo" class="content">
+        <h2 class="section-title">COGNAC – XO</h2>
+        <p class="section-subtitle">
+          Invecchiamento lungo, complessità massima: qui si beve solo liscio. È il Cognac da "un'ultima per la strada".
+        </p>
+        <table>
+          <tr>
+            <th>Etichetta</th>
+            <th>50ml</th>
+            <th>Cocktail</th>
+          </tr>
+          <tr>
+            <td>Hennessy XO</td>
+            <td class="price">30 €</td>
+            <td class="price">—</td>
+          </tr>
+        </table>
+
+        <p style="font-size:0.8rem; color:#aaa; margin-top:10px;">
+          Note generali: cacao, frutta candita, legno nobile. Da meditazione, perfetto a fine serata o con un sigaro.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== AMARI VIEW ========== -->
+  <div id="amari-view" class="view hidden">
+    <div class="food-panel-header">
+      <div class="section-title">Amari &amp; Digestivi</div>
+      <button class="back-button" id="back-to-menu-amari">
+        <span>←</span> Torna al menu principale
+      </button>
+      <div class="panel-logo"><img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1739885813/NOMAD_logo_j0ahay.png" alt="NOMAD"></div>
+    </div>
+
+    <div class="food-panel-content">
+      <div class="food-menu-header">
+        <h1>🥃 NOMAD – AMARI & DIGESTIVI</h1>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="openAmariTab('amari_classici')">CLASSICI ITALIANI</button>
+        <button class="tab" onclick="openAmariTab('amari_cremosi')">CREMOSI &amp; AROMATICI</button>
+        <button class="tab" onclick="openAmariTab('amari_erboristici')">ERBORISTICI &amp; INTERNAZIONALI</button>
+      </div>
+
+      <!-- CLASSICI ITALIANI -->
+      <div id="amari_classici" class="content active">
+        <h2 class="section-title">CLASSICI ITALIANI</h2>
+        <table>
+          <tr><th>Nome</th><th>25 ml</th><th>50 ml</th></tr>
+          <tr><td>Abracadabra</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Amara</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Amaro del Capo</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Averna</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Braulio</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Camatti</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Cynar</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Montenegro</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Prione</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+        </table>
+      </div>
+
+      <!-- CREMOSI & AROMATICI -->
+      <div id="amari_cremosi" class="content">
+        <h2 class="section-title">CREMOSI &amp; AROMATICI</h2>
+        <table>
+          <tr><th>Nome</th><th>25 ml</th><th>50 ml</th></tr>
+          <tr><td>Baileys</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Disaronno</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Disaronno Velvet</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Zabov</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Crema di Pistacchio</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Anima Nera</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Limoncino</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Liquore dell’Etna – Pera</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Liquore dell’Etna – Finocchio</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+        </table>
+      </div>
+
+      <!-- ERBORISTICI & INTERNAZIONALI -->
+      <div id="amari_erboristici" class="content">
+        <h2 class="section-title">ERBORISTICI &amp; INTERNAZIONALI</h2>
+        <table>
+          <tr><th>Nome</th><th>25 ml</th><th>50 ml</th></tr>
+          <tr><td>Branca Menta</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Fernet Branca</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Jefferson</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Valhalla</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Ypocras</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Jägermeister</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Mr Black</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+          <tr><td>Sambuca</td><td class="price">3 €</td><td class="price">5 €</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== RUM VIEW ========== -->
+  <div id="rum-view" class="view hidden">
+    <div class="food-panel-header">
+      <div class="section-title">Rum</div>
+      <button class="back-button" id="back-to-menu-rum">
+        <span>←</span> Torna al menu principale
+      </button>
+      <div class="panel-logo"><img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1739885813/NOMAD_logo_j0ahay.png" alt="NOMAD"></div>
+    </div>
+
+    <div class="food-panel-content">
+      <div class="food-menu-header">
+        <h1>🥃 NOMAD – RUM SELECTION</h1>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="openRumTab('rum_spagnolo_ron')">SPAGNOLO / RON</button>
+        <button class="tab" onclick="openRumTab('rum_inglese_jamaica')">INGLESE / JAMAICA FUNKY</button>
+        <button class="tab" onclick="openRumTab('rum_francese_agricole')">FRANCESE / AGRICOLE</button>
+        <button class="tab" onclick="openRumTab('rum_flavored_modern')">FLAVORED / MODERN</button>
+        <button class="tab" onclick="openRumTab('rum_blended_premium')">BLENDED PREMIUM</button>
+      </div>
+
+      <!-- SPAGNOLO / RON -->
+      <div id="rum_spagnolo_ron" class="content active">
+        <h2 class="section-title">SPAGNOLO / RON</h2>
+        <table>
+          <tr><th>Nome</th><th>50 ml</th><th>Cocktail</th></tr>
+          <tr><td><strong>Diplomatico Mantuano</strong></td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Diplomatico Planas</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+          <tr><td>Diplomatico Reserva Esclusiva</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Don Papa</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Don Papa Baroko</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Demon's Share</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>El Ron Prohibido</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Malteco 10</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Matusalem 7 anni</td><td class="price">7 €</td><td class="price">9 €</td></tr>
+          <tr><td>Matusalem Gran Reserva</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Santa Teresa 1796</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Zacapa Solera 23</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Zacapa XO</td><td class="price">20 €</td><td class="price">22 €</td></tr>
+        </table>
+      </div>
+
+      <!-- INGLESE / JAMAICA FUNKY -->
+      <div id="rum_inglese_jamaica" class="content">
+        <h2 class="section-title">INGLESE / JAMAICA FUNKY</h2>
+        <table>
+          <tr><th>Nome</th><th>50 ml</th><th>Cocktail</th></tr>
+          <tr><td>Hampden</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Hampden Overproof</td><td class="price">14 €</td><td class="price">16 €</td></tr>
+          <tr><td>Rum Fire</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Worthy Park</td><td class="price">20 €</td><td class="price">22 €</td></tr>
+          <tr><td>Sailor Jerry</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Plantation O.F.T.D.</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+        </table>
+      </div>
+
+      <!-- FRANCESE / AGRICOLE -->
+      <div id="rum_francese_agricole" class="content">
+        <h2 class="section-title">FRANCESE / AGRICOLE</h2>
+        <table>
+          <tr><th>Nome</th><th>50 ml</th><th>Cocktail</th></tr>
+          <tr><td>Karukera</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Veritas</td><td class="price">7 €</td><td class="price">9 €</td></tr>
+        </table>
+      </div>
+
+      <!-- FLAVORED / MODERN -->
+      <div id="rum_flavored_modern" class="content">
+        <h2 class="section-title">FLAVORED / MODERN</h2>
+        <table>
+          <tr><th>Nome</th><th>50 ml</th><th>Cocktail</th></tr>
+          <tr><td>Kraken</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Dead Man’s Finger Coconut</td><td class="price">7 €</td><td class="price">9 €</td></tr>
+          <tr><td>Plantation Pineapple</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+        </table>
+      </div>
+
+      <!-- BLENDED PREMIUM -->
+      <div id="rum_blended_premium" class="content">
+        <h2 class="section-title">BLENDED PREMIUM</h2>
+        <table>
+          <tr><th>Nome</th><th>50 ml</th><th>Cocktail</th></tr>
+          <tr><td>Plantation XO</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Plantation Original Dark</td><td class="price">7 €</td><td class="price">9 €</td></tr>
+          <tr><td>Plantation 3 Stars</td><td class="price">7 €</td><td class="price">9 €</td></tr>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========== GIN VIEW ========== -->
+  <div id="gin-view" class="view hidden">
+    <div class="food-panel-header">
+      <div class="section-title">Gin</div>
+      <button class="back-button" id="back-to-menu-gin">
+        <span>←</span> Torna al menu principale
+      </button>
+      <div class="panel-logo"><img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1739885813/NOMAD_logo_j0ahay.png" alt="NOMAD"></div>
+    </div>
+
+    <div class="food-panel-content">
+      <div class="food-menu-header">
+        <h1>🍸 NOMAD – GIN SELECTION</h1>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="openGinTab('gin_london')">LONDON DRY &amp; TRADIZIONALI</button>
+        <button class="tab" onclick="openGinTab('gin_newwestern')">CONTEMPORANEI / NEW WESTERN</button>
+        <button class="tab" onclick="openGinTab('gin_mediterranei')">MEDITERRANEI &amp; AGRUMATI</button>
+        <button class="tab" onclick="openGinTab('gin_florali')">FLOREALI &amp; SPEZIATI</button>
+        <button class="tab" onclick="openGinTab('gin_italiani')">ITALIANI &amp; CRAFT</button>
+        <button class="tab" onclick="openGinTab('gin_premium')">SIGNATURE &amp; PREMIUM</button>
+      </div>
+
+      <!-- 1. LONDON DRY & TRADIZIONALI -->
+      <div id="gin_london" class="content active">
+        <h2 class="section-title">LONDON DRY &amp; TRADIZIONALI</h2>
+        <table>
+          <tr><th>Nome</th><th>50 ml</th><th>Cocktail</th></tr>
+          <tr><td>Beefeater</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Tanqueray</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Tanqueray 10</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Fifty Pounds</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Hayman's</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Bulldog</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>The London N°1</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>The Botanist</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Number 3</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Bombay Sapphire</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Scapegrace Dry</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Cremorne Sloe Gin</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+        </table>
+      </div>
+
+      <!-- 2. CONTEMPORANEI / NEW WESTERN -->
+      <div id="gin_newwestern" class="content">
+        <h2 class="section-title">CONTEMPORANEI / NEW WESTERN</h2>
+        <table>
+          <tr><th>Nome</th><th>50 ml</th><th>Cocktail</th></tr>
+          <tr><td>Aviation</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Baigur Saigon</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Blue Beetle</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Brockmans</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+          <tr><td>Brockmans Agave Cut</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Brockmans Orange Kiss</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+          <tr><td>Jensen</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Jensen Old Tom</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Jinzu</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Adamus</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Nordes</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Yu Gin</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Bareksten</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Illusionist</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Alkemist</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+        </table>
+      </div>
+
+      <!-- 3. MEDITERRANEI & AGRUMATI -->
+      <div id="gin_mediterranei" class="content">
+        <h2 class="section-title">MEDITERRANEI &amp; AGRUMATI</h2>
+        <table>
+          <tr><th>Nome</th><th>50 ml</th><th>Cocktail</th></tr>
+          <tr><td>Gin Mare</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+          <tr><td>Gin Mare Capri</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Malfy Limone</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Malfy Arancia</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Malfy Pink</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Malfy Original</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Le Tribute</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Portofino</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Cinqueterre</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Gold</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Gunpowder Sardinian Citrus</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Gunpowder Fig &amp; Laurel</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Dolce Vita</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+        </table>
+      </div>
+
+      <!-- 4. FLOREALI & SPEZIATI -->
+      <div id="gin_florali" class="content">
+        <h2 class="section-title">FLOREALI &amp; SPEZIATI</h2>
+        <table>
+          <tr><th>Nome</th><th>50 ml</th><th>Cocktail</th></tr>
+          <tr><td>Amazzoni</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Etsu</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Etsu Double Yuzu</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Roku Suntory</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Canaima</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Elephant</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Elephant Sloe Gin</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Glendalough</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Nouaison</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Silent Pool</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>J Rose</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Ki No Tea</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Knut Hansen Gin</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Scapegrace Black</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+        </table>
+      </div>
+
+      <!-- 5. ITALIANI & CRAFT -->
+      <div id="gin_italiani" class="content">
+        <h2 class="section-title">ITALIANI &amp; CRAFT DISTILLERIES</h2>
+        <table>
+          <tr><th>Nome</th><th>50 ml</th><th>Cocktail</th></tr>
+          <tr><td>Gin del Professore Crocodile</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Gin del Professore Madame</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Gin del Professore Monsieur</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Magiantosa Etna</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Barbarasa</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Barbarasa Navy</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Beccaro Nonno</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Gil Gin</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Principium</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Pepe Gin</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Gin Grifu</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Marconi 42</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Marconi 46</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Cannabis Sativa</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Cannabis Gin</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+        </table>
+      </div>
+
+      <!-- 6. SIGNATURE & PREMIUM -->
+      <div id="gin_premium" class="content">
+        <h2 class="section-title">SIGNATURE &amp; PREMIUM</h2>
+        <table>
+          <tr><th>Nome</th><th>50 ml</th><th>Cocktail</th></tr>
+          <tr><td>Engine</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Martin Miller</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Monkey 47</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+          <tr><td>Gunpowder</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Amuerte Black</td><td class="price">13 €</td><td class="price">15 €</td></tr>
+          <tr><td>Amuerte White</td><td class="price">13 €</td><td class="price">15 €</td></tr>
+          <tr><td>Amuerte Red</td><td class="price">13 €</td><td class="price">15 €</td></tr>
+          <tr><td>Amuerte Blue</td><td class="price">13 €</td><td class="price">15 €</td></tr>
+          <tr><td>Amuerte Green</td><td class="price">13 €</td><td class="price">15 €</td></tr>
+          <tr><td>Hendrick's</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Hendrick's Lunar</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Hendrick's Neptunia</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Hendrick's Orbium</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Hendrick's Floradora</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Hendrick's Grand Cabaret</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Hendrick's Oasium</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== VINI VIEW ========== -->
+  <div id="vini-view" class="view hidden">
+    <div class="food-panel-header">
+      <div class="section-title">Vini</div>
+      <button class="back-button" id="back-to-menu-vini">
+        <span>←</span> Torna al menu principale
+      </button>
+      <div class="panel-logo"><img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1739885813/NOMAD_logo_j0ahay.png" alt="NOMAD"></div>
+    </div>
+
+    <div class="food-panel-content">
+      <div class="food-menu-header">
+        <h1>🍷 NOMAD – VINI</h1>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="openViniTab('vini_rossi')">ROSSI</button>
+        <button class="tab" onclick="openViniTab('vini_bianchi')">BIANCHI</button>
+        <button class="tab" onclick="openViniTab('vini_bollicine')">BOLLICINE</button>
+      </div>
+
+      <!-- ROSSI -->
+      <div id="vini_rossi" class="content active">
+        <h2 class="section-title">VINI ROSSI</h2>
+        <table>
+          <tr><td><strong>Campo al Mare Bolgheri Rosso DOC 2022</strong><span class="details">Calice 7€ | Bottiglia 35€</span></td></tr>
+          <tr><td><strong>Argamakow Langhe DOC Pinot Nero 2019</strong><span class="details">Calice 6€ | Bottiglia 28€</span></td></tr>
+          <tr><td><strong>“FANOVA” Primitivo Gioia del Colle DOC 2022</strong><span class="details">Calice 6€ | Bottiglia 28€</span></td></tr>
+          <tr><td><strong>“FANOVA” Riserva Primitivo Gioia del Colle DOC 2019</strong><span class="details">Bottiglia 40€</span></td></tr>
+          <tr><td><strong>“HEBO” Rosso IGT Petra 2021</strong><span class="details">Bottiglia 28€</span></td></tr>
+          <tr><td><strong>“QUERCEGOBBE” Merlot IGT Petra 2019</strong><span class="details">Bottiglia 45€</span></td></tr>
+          <tr><td><strong>“COLLEMASSARI” Rosso Riserva Montecucco DOC 2019</strong><span class="details">Bottiglia 30€</span></td></tr>
+          <tr><td><strong>“COLLEMASSARI” Poggio Lombrone Montecucco DOC 2017</strong><span class="details">Bottiglia 45€</span></td></tr>
+          <tr><td><strong>La Merla della Miniera IGT 2018</strong><span class="details">Bottiglia 40€</span></td></tr>
+          <tr><td><strong>“Bolgheri” Rosso DOC Podere Grattamacco 2019</strong><span class="details">Bottiglia 35€</span></td></tr>
+          <tr><td><strong>“Nipozzano Vecchie Viti” Chianti Rufina DOCG Riserva 2018</strong><span class="details">Bottiglia 35€</span></td></tr>
+          <tr><td><strong>“Nipozzano” Chianti Rufina DOCG Riserva 2016</strong><span class="details">Bottiglia 45€</span></td></tr>
+          <tr><td><strong>“Montesodi” Chianti Rufina DOCG Riserva 2017</strong><span class="details">Bottiglia 70€</span></td></tr>
+          <tr><td><strong>“La Fuga” Brunello di Montalcino DOCG 2019</strong><span class="details">Bottiglia 70€</span></td></tr>
+          <tr><td><strong>“Barolo” DOCG del Comune di Serralunga d'Alba 2017</strong><span class="details">Bottiglia 65€</span></td></tr>
+          <tr><td><strong>“Vespa Rosso” Venezia Giulia Rosso IGT 2015</strong><span class="details">Bottiglia 65€</span></td></tr>
+          <tr><td><strong>“SOMA” Südtirol Alto Adige DOC 2022</strong><span class="details">Bottiglia 48€</span></td></tr>
+          <tr><td><strong>“AMARONE” Corte Giara della Valpolicella DOCG 2018</strong><span class="details">Bottiglia 70€</span></td></tr>
+          <tr><td><strong>“TELAMONE” Nero di Troia IGT 2019</strong><span class="details">Bottiglia 30€</span></td></tr>
+          <tr><td><strong>“SPELT” Montepulciano d’Abruzzo Riserva DOC 2017</strong><span class="details">Bottiglia 35€</span></td></tr>
+          <tr><td><strong>“TORRETTE” DOP 2021</strong><span class="details">Bottiglia 25€</span></td></tr>
+          <tr><td><strong>“ETNICO” Montefalco Sagrantino DOCG 2017</strong><span class="details">Bottiglia 42€</span></td></tr>
+        </table>
+      </div>
+
+      <!-- BIANCHI -->
+      <div id="vini_bianchi" class="content">
+        <h2 class="section-title">VINI BIANCHI</h2>
+        <table>
+          <tr><td><strong>“ARENIS” Gewürztraminer Alto Adige DOC 2023</strong><span class="details">Calice 6€ | Bottiglia 25€</span></td></tr>
+          <tr><td><strong>Pinot Grigio Südtirol Alto Adige DOC 2023</strong><span class="details">Calice 6€ | Bottiglia 25€</span></td></tr>
+          <tr><td><strong>“MELACCE” Montecucco Vermentino DOC 2022</strong><span class="details">Calice 6€ | Bottiglia 22€</span></td></tr>
+          <tr><td><strong>“VIGNEBASSE” Colli di Luna Vermentino Bianco DOC 2023</strong><span class="details">Bottiglia 27€</span></td></tr>
+          <tr><td><strong>“PLUS” Bastianich IGT 2016</strong><span class="details">Bottiglia 70€</span></td></tr>
+          <tr><td><strong>“AMOS” Kurtatsch Südtirol – Alto Adige DOC</strong><span class="details">Bottiglia 45€</span></td></tr>
+          <tr><td><strong>“VIGNE VÈCIE” Cinqueterre Terenzuola DOC 2020</strong><span class="details">Bottiglia 45€</span></td></tr>
+          <tr><td><strong>“FOSSO DI CORSANO” Vermentino Colli di Luni DOC 2023</strong><span class="details">Bottiglia 33€</span></td></tr>
+        </table>
+      </div>
+
+      <!-- BOLLICINE -->
+      <div id="vini_bollicine" class="content">
+        <h2 class="section-title">BOLLICINE</h2>
+        <table>
+          <tr><td><strong>Valdobbiadene Prosecco Superiore DOCG Extra Dry Rebulì</strong><span class="details">Calice 6€ | Bottiglia 25€</span></td></tr>
+          <tr><td><strong>Valdobbiadene Prosecco Superiore DOCG Extra Brut Rebulì</strong><span class="details">Calice 6€ | Bottiglia 25€</span></td></tr>
+          <tr><td><strong>Franciacorta DOCG Brut – Barboglio de Gaioncelli</strong><span class="details">Calice 8€ | Bottiglia 35€</span></td></tr>
+          <tr><td><strong>Franciacorta DOCG Extra Brut Millesimato 2018 – Barboglio de Gaioncelli</strong><span class="details">Bottiglia 50€</span></td></tr>
+          <tr><td><strong>Cava Segura Viudas Brut Reserva Heredad</strong><span class="details">Bottiglia 60€</span></td></tr>
+          <tr><td><strong>Champagne Laurent-Perrier Brut</strong><span class="details">Bottiglia 80€</span></td></tr>
+          <tr><td><strong>Champagne Dom Pérignon Vintage 2012</strong><span class="details">Bottiglia 350€</span></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== BIRRE VIEW ========== -->
+  <div id="birre-view" class="view hidden">
+    <div class="food-panel-header">
+      <div class="section-title">Birre</div>
+      <button class="back-button" id="back-to-menu-birre">
+        <span>←</span> Torna al menu principale
+      </button>
+      <div class="panel-logo"><img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1739885813/NOMAD_logo_j0ahay.png" alt="NOMAD"></div>
+    </div>
+
+    <div class="food-panel-content">
+      <div class="food-menu-header">
+        <h1>🍺 NOMAD – BIRRE</h1>
+      </div>
+
+      <div class="content">
+        <h2 class="section-title">SELEZIONE BIRRE IN BOTTIGLIA</h2>
+
+        <table>
+          <tr><th>Birra</th><th>Prezzo</th></tr>
+
+          <tr>
+            <td>
+              <strong>THERESIANER – PILS • 5.0°</strong><br>
+              <span class="details">Stile: Pilsner | Fermentazione: Bassa<br>Punto d’amaro: 33 IBU | Provenienza: Trieste (ITA)<br>33cl</span>
+            </td>
+            <td class="price">5,00 €</td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>THERESIANER – VIENNA • 5.3°</strong><br>
+              <span class="details">Stile: Vienna | Fermentazione: Bassa<br>Punto d’amaro: 20 IBU | Provenienza: Trieste (ITA)<br>33cl</span>
+            </td>
+            <td class="price">5,00 €</td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>FIRESTONE WALKER – HOPNOSIS • 6.7°</strong><br>
+              <span class="details">Stile: American IPA | Fermentazione: Alta<br>Punto d’amaro: 45 IBU | Provenienza: California (USA)<br>35,5cl</span>
+            </td>
+            <td class="price">7,00 €</td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>BUDWEISER – LAGER • 5.0°</strong><br>
+              <span class="details">Stile: Lager | Fermentazione: Bassa<br>Punto d’amaro: 12 IBU | Provenienza: USA<br>33cl</span>
+            </td>
+            <td class="price">5,00 €</td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>DAMM – INEDIT • 4.8°</strong><br>
+              <span class="details">Stile: Blanche | Fermentazione: Alta<br>Punto d’amaro: 21 IBU | Provenienza: Spagna<br>33cl</span>
+            </td>
+            <td class="price">5,00 €</td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>KLOSTER SCHEYERN – WEISSE HELL • 5.2°</strong><br>
+              <span class="details">Stile: Hefeweiss | Fermentazione: Alta<br>Punto d’amaro: 12 IBU | Provenienza: Baviera (D)<br>50cl</span>
+            </td>
+            <td class="price">7,00 €</td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>FIRESTONE WALKER – UNION JACK • 7.5°</strong><br>
+              <span class="details">Stile: American IPA | Fermentazione: Alta<br>Punto d’amaro: 70 IBU | Provenienza: California (USA)<br>35,5cl</span>
+            </td>
+            <td class="price">7,00 €</td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>CORONA EXTRA • 4.6°</strong><br>
+              <span class="details">Stile: Lager | Fermentazione: Bassa<br>Punto d’amaro: 19 IBU | Provenienza: Messico<br>33cl</span>
+            </td>
+            <td class="price">5,00 €</td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>TENNENT'S SUPER • 9.0°</strong><br>
+              <span class="details">Stile: Lager | Fermentazione: Bassa<br>Punto d’amaro: 25 IBU | Provenienza: Scozia<br>33cl</span>
+            </td>
+            <td class="price">5,00 €</td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>ICHNUSA • 4.7°</strong><br>
+              <span class="details">Stile: Lager | Fermentazione: Bassa<br>Punto d’amaro: 20 IBU | Provenienza: Sardegna (ITA)<br>33cl</span>
+            </td>
+            <td class="price">5,00 €</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== TEQUILA & MEZCAL VIEW ========== -->
+  <!-- ========== VODKA VIEW ========== -->
+  <div id="vodka-view" class="view hidden">
+    <div class="food-panel-header">
+      <div class="section-title">Vodka</div>
+      <button class="back-button" id="back-to-menu-vodka">
+        <span>←</span> Torna al menu principale
+      </button>
+      <div class="panel-logo"><img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1739885813/NOMAD_logo_j0ahay.png" alt="NOMAD"></div>
+    </div>
+
+    <div class="food-panel-content">
+      <div class="food-menu-header">
+        <h1>🍸 NOMAD – VODKA SELECTION</h1>
+      </div>
+
+      <div class="content active">
+        <h2 class="section-title">Vodka</h2>
+        <table>
+          <tr><th>Etichetta</th><th>50 ml</th><th>Cocktail</th></tr>
+          <tr><td>Beluga</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+          <tr><td>Belvedere</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Ciroc White Grapes</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Crystal Head Aurora</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Crystal Head Onyx</td><td class="price">15 €</td><td class="price">17 €</td></tr>
+          <tr><td>Eiko</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+          <tr><td>Elit</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Ghost Vodka Gold</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Grey Goose</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+          <tr><td>Mendelev</td><td class="price">7 €</td><td class="price">9 €</td></tr>
+          <tr><td>Nikka Coffey</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Skorppio</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Tito's</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SOFT DRINK VIEW ========== -->
+  <div id="softdrink-view" class="view hidden">
+    <div class="food-panel-header">
+      <div class="section-title">Soft Drink</div>
+      <button class="back-button" id="back-to-menu-softdrink">
+        <span>←</span> Torna al menu principale
+      </button>
+      <div class="panel-logo"><img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1739885813/NOMAD_logo_j0ahay.png" alt="NOMAD"></div>
+    </div>
+
+    <div class="food-panel-content">
+      <div class="food-menu-header">
+        <h1>🥤 NOMAD – SOFT DRINK SELECTION</h1>
+      </div>
+
+      <div class="content active">
+        <h2 class="section-title">Soft Drink</h2>
+        <table>
+          <tr><th>Nome</th><th>Prezzo</th></tr>
+          <tr><td>Acqua brillante</td><td class="price">4 €</td></tr>
+          <tr><td>Lemon soda</td><td class="price">4 €</td></tr>
+          <tr><td>Coca cola</td><td class="price">4 €</td></tr>
+          <tr><td>Coca cola zero</td><td class="price">4 €</td></tr>
+          <tr><td>Redbull</td><td class="price">4 €</td></tr>
+          <tr><td>Fever-tree Indian</td><td class="price">4 €</td></tr>
+          <tr><td>Fever-tree Mediterranea</td><td class="price">4 €</td></tr>
+          <tr><td>Fever-tree Light</td><td class="price">4 €</td></tr>
+          <tr><td>Fever-tree Ginger</td><td class="price">4 €</td></tr>
+          <tr><td>Ginger ale</td><td class="price">4 €</td></tr>
+          <tr><td>Tonica grapefruit</td><td class="price">4 €</td></tr>
+          <tr><td>Acqua Nat</td><td class="price">1 €</td></tr>
+          <tr><td>Acqua gas</td><td class="price">1 €</td></tr>
+          <tr><td>Juice (scegli tra questi)<br><small>Ananas, Mango, Melograno, Mirtillo</small></td><td class="price">4 €</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== TEQUILA & MEZCAL VIEW ========== -->
+  <div id="tequila-view" class="view hidden">
+    <div class="food-panel-header">
+      <div class="section-title">Tequila &amp; Mezcal</div>
+      <button class="back-button" id="back-to-menu-tequila">
+        <span>←</span> Torna al menu principale
+      </button>
+      <div class="panel-logo"><img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1739885813/NOMAD_logo_j0ahay.png" alt="NOMAD"></div>
+    </div>
+
+    <div class="food-panel-content">
+      <div class="food-menu-header">
+        <h1>🌵 NOMAD – TEQUILA &amp; MEZCAL</h1>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="openTequilaTab('blanco')">TEQUILA BLANCO / SILVER</button>
+        <button class="tab" onclick="openTequilaTab('reposado')">TEQUILA REPOSADO</button>
+        <button class="tab" onclick="openTequilaTab('anejo')">TEQUILA AÑEJO</button>
+        <button class="tab" onclick="openTequilaTab('mezcal')">MEZCAL &amp; AGAVE SPECIAL</button>
+      </div>
+
+      <!-- BLANCO -->
+      <div id="blanco" class="content active">
+        <h2 class="section-title">TEQUILA BLANCO / SILVER / PLATA</h2>
+        <table>
+          <tr><th>Nome</th><th>50 ml</th><th>Drink</th></tr>
+          <tr><td>30-30 Blanco</td><td class="price">9 €</td><td class="price">11 €</td></tr>
+          <tr><td>Altos Blanco</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Casamigos Blanco</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Cimarron Blanco</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Don Julio Blanco</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Espolòn Blanco</td><td class="price">7 €</td><td class="price">9 €</td></tr>
+          <tr><td>Herradura Plata</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Kah Blanco</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>La Dama Blanco</td><td class="price">15 €</td><td class="price">17 €</td></tr>
+          <tr><td>Patrón Silver</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>1800 Silver</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+        </table>
+      </div>
+
+      <!-- REPOSADO -->
+      <div id="reposado" class="content">
+        <h2 class="section-title">TEQUILA REPOSADO</h2>
+        <table>
+          <tr><th>Nome</th><th>50 ml</th><th>Drink</th></tr>
+          <tr><td>30-30 Reposado</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Altos Reposado</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Casamigos Reposado</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Cimarron Reposado</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Don Julio Reposado</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Espolòn Reposado</td><td class="price">8 €</td><td class="price">10 €</td></tr>
+          <tr><td>Herradura Reposado</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Kah Reposado</td><td class="price">14 €</td><td class="price">16 €</td></tr>
+          <tr><td>Patrón Reposado</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>1800 Reposado</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+        </table>
+      </div>
+
+      <!-- AÑEJO -->
+      <div id="anejo" class="content">
+        <h2 class="section-title">TEQUILA AÑEJO</h2>
+        <table>
+          <tr><th>Nome</th><th>50 ml</th><th>Drink</th></tr>
+          <tr><td>30-30 Añejo</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Casamigos Añejo</td><td class="price">14 €</td><td class="price">16 €</td></tr>
+          <tr><td>Don Julio Añejo</td><td class="price">14 €</td><td class="price">16 €</td></tr>
+          <tr><td>Espolòn Añejo</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Herradura Añejo</td><td class="price">14 €</td><td class="price">16 €</td></tr>
+          <tr><td>Kah Añejo</td><td class="price">16 €</td><td class="price">18 €</td></tr>
+          <tr><td>Patrón Añejo</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>1800 Añejo</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+        </table>
+      </div>
+
+      <!-- MEZCAL & AGAVE SPECIAL -->
+      <div id="mezcal" class="content">
+        <h2 class="section-title">MEZCAL &amp; AGAVE SPECIAL</h2>
+        <table>
+          <tr><th>Nome</th><th>50 ml</th><th>Drink</th></tr>
+          <tr><td>Contraluz</td><td class="price">14 €</td><td class="price">16 €</td></tr>
+          <tr><td>Derrumbes San Luis</td><td class="price">12 €</td><td class="price">14 €</td></tr>
+          <tr><td>Ilegal Añejo</td><td class="price">20 €</td><td class="price">22 €</td></tr>
+          <tr><td>Ilegal Joven</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Ilegal Reposado</td><td class="price">14 €</td><td class="price">16 €</td></tr>
+          <tr><td>Vida</td><td class="price">10 €</td><td class="price">12 €</td></tr>
+          <tr><td>Yuu Baal Tobalá Joven</td><td class="price">14 €</td><td class="price">16 €</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    /* ===== CAROUSEL IN PRIMO PIANO ===== */
+    const track = document.querySelector(".featured-track");
+    const dotsWrap = document.querySelector(".featured-dots");
+
+    if (track && dotsWrap) {
+      const cards = Array.from(track.querySelectorAll(".featured-card"));
+
+      if (cards.length > 0) {
+        dotsWrap.innerHTML = cards.map(() => `<span class="featured-dot"></span>`).join("");
+        const dots = Array.from(dotsWrap.querySelectorAll(".featured-dot"));
+
+        function setActive(index){
+          cards.forEach((c,i)=>c.classList.toggle("is-active", i===index));
+          dots.forEach((d,i)=>d.classList.toggle("active", i===index));
+        }
+
+        setActive(0);
+
+        function nearestIndexToCenter(){
+          const center = track.scrollLeft + track.clientWidth / 2;
+          let bestIdx = 0;
+          let bestDist = Infinity;
+
+          cards.forEach((card, idx) => {
+            const cardCenter =
+              (card.offsetLeft - track.offsetLeft) + card.offsetWidth / 2;
+            const dist = Math.abs(center - cardCenter);
+            if (dist < bestDist){
+              bestDist = dist;
+              bestIdx = idx;
+            }
+          });
+          return bestIdx;
+        }
+
+        let settleTimer = null;
+        let isScrolling = false;
+        
+        track.addEventListener("scroll", () => {
+          isScrolling = true;
+          if (settleTimer) clearTimeout(settleTimer);
+          settleTimer = setTimeout(() => {
+            isScrolling = false;
+            const idx = nearestIndexToCenter();
+            setActive(idx);
+          }, 80);
+        }, { passive:true });
+
+        function scrollToCard(index, behavior="smooth"){
+          const card = cards[index];
+          if (!card) return;
+          const containerCenter = track.clientWidth / 2;
+          const cardCenter = card.offsetWidth / 2;
+          const left = card.offsetLeft - containerCenter + cardCenter;
+          track.scrollTo({ left, behavior });
+        }
+
+        dots.forEach((dot, index) => {
+          dot.addEventListener("click", () => {
+            scrollToCard(index, "smooth");
+            setActive(index);
+          });
+        });
+
+        cards.forEach(card => {
+          card.addEventListener("click", () => {
+            const section = card.dataset.section;
+            console.log("Card cliccata:", section);
+          });
+        });
+
+        window.addEventListener("resize", () => {
+          const activeIndex = cards.findIndex(c=>c.classList.contains("is-active"));
+          if (activeIndex >= 0) scrollToCard(activeIndex, "auto");
+        });
+      }
+    }
+
+    const mainView = document.getElementById('main-view');
+    let scrollPosition = 0;
+
+    /* ==== MAIN <-> 7 MERAVIGLIE ==== */
+    const meravigliView = document.getElementById('meraviglie-view');
+    const meravigliCard = document.querySelector('[data-section="7meraviglie"]');
+    const backMeravigliBtn = document.getElementById('back-meraviglie');
+
+    if (mainView && meravigliView && meravigliCard && backMeravigliBtn){
+      meravigliCard.addEventListener('click', () => {
+        scrollPosition = window.scrollY;
+        mainView.classList.add('hidden');
+        meravigliView.classList.remove('hidden');
+      });
+
+      backMeravigliBtn.addEventListener('click', () => {
+        meravigliView.classList.add('hidden');
+        mainView.classList.remove('hidden');
+        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+      });
+    }
+
+    /* ==== MAIN <-> SPRITZ ==== */
+    const spritzView = document.getElementById('spritz-view');
+    const spritzCard = document.querySelector('[data-section="spritz"]');
+    const backSpritzBtn = document.getElementById('back-spritz');
+
+    if (mainView && spritzView && spritzCard && backSpritzBtn){
+      spritzCard.addEventListener('click', () => {
+        scrollPosition = window.scrollY;
+        mainView.classList.add('hidden');
+        spritzView.classList.remove('hidden');
+      });
+
+      backSpritzBtn.addEventListener('click', () => {
+        spritzView.classList.add('hidden');
+        mainView.classList.remove('hidden');
+        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+      });
+    }
+
+    /* ==== MAIN <-> ANALCOLICI ==== */
+    const analcolicView = document.getElementById('analcolici-view');
+    const analcolicCard = document.querySelector('[data-section="analcolici"]');
+    const backAnalcolicBtn = document.getElementById('back-analcolici');
+
+    if (mainView && analcolicView && analcolicCard && backAnalcolicBtn){
+      analcolicCard.addEventListener('click', () => {
+        scrollPosition = window.scrollY;
+        mainView.classList.add('hidden');
+        analcolicView.classList.remove('hidden');
+      });
+
+      backAnalcolicBtn.addEventListener('click', () => {
+        analcolicView.classList.add('hidden');
+        mainView.classList.remove('hidden');
+        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+      });
+    }
+
+    /* ==== SWITCH VISTA: MAIN <-> FOOD ==== */
+    const foodView = document.getElementById('food-view');
+    const foodCard = document.getElementById('food-card-main');
+    const backBtn = document.getElementById('back-to-menu');
+
+    if (mainView && foodView && foodCard && backBtn){
+      const openFood = (e) => {
+        if (e) e.preventDefault();
+        scrollPosition = window.scrollY;
+        mainView.classList.add('hidden');
+        foodView.classList.remove('hidden');
+      };
+
+      const closeFood = (e) => {
+        if (e) e.preventDefault();
+        foodView.classList.add('hidden');
+        mainView.classList.remove('hidden');
+        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+      };
+
+      foodCard.addEventListener('click', openFood);
+      backBtn.addEventListener('click', closeFood);
+    }
+
+    /* ==== MAIN <-> WHISKY ==== */
+    const whiskyView = document.getElementById('whisky-view');
+    const whiskyCard = document.getElementById('whisky-card-main');
+    const backWhiskyBtn = document.getElementById('back-to-menu-whisky');
+
+    if (mainView && whiskyView && whiskyCard && backWhiskyBtn){
+      const openWhiskyView = (e) => {
+        if (e) e.preventDefault();
+        scrollPosition = window.scrollY;
+        mainView.classList.add('hidden');
+        whiskyView.classList.remove('hidden');
+      };
+
+      const closeWhiskyView = (e) => {
+        if (e) e.preventDefault();
+        whiskyView.classList.add('hidden');
+        mainView.classList.remove('hidden');
+        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+      };
+
+      whiskyCard.addEventListener('click', openWhiskyView);
+      backWhiskyBtn.addEventListener('click', closeWhiskyView);
+    }
+
+
+    /* ==== MAIN <-> AMARI ==== */
+    const amariView = document.getElementById('amari-view');
+    const amariCard = document.getElementById('amari-card-main');
+    const backAmariBtn = document.getElementById('back-to-menu-amari');
+
+    if (mainView && amariView && amariCard && backAmariBtn){
+      const openAmariView = (e) => {
+        if (e) e.preventDefault();
+        scrollPosition = window.scrollY;
+        mainView.classList.add('hidden');
+        amariView.classList.remove('hidden');
+      };
+
+      const closeAmariView = (e) => {
+        if (e) e.preventDefault();
+        amariView.classList.add('hidden');
+        mainView.classList.remove('hidden');
+        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+      };
+
+      amariCard.addEventListener('click', openAmariView);
+      backAmariBtn.addEventListener('click', closeAmariView);
+    }
+
+      /* ==== MAIN <-> RUM ==== */
+      const rumView = document.getElementById('rum-view');
+      const rumCard = document.getElementById('rum-card-main');
+      const backRumBtn = document.getElementById('back-to-menu-rum');
+
+      if (mainView && rumView && rumCard && backRumBtn){
+        const openRumView = (e) => {
+          if (e) e.preventDefault();
+          scrollPosition = window.scrollY;
+          mainView.classList.add('hidden');
+          rumView.classList.remove('hidden');
+        };
+
+        const closeRumView = (e) => {
+          if (e) e.preventDefault();
+          rumView.classList.add('hidden');
+          mainView.classList.remove('hidden');
+          window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+        };
+
+        if (rumCard) rumCard.addEventListener('click', openRumView);
+        backRumBtn.addEventListener('click', closeRumView);
+      }
+
+    /* ==== MAIN <-> VODKA ==== */
+    const vodkaView = document.getElementById('vodka-view');
+    const vodkaCard = document.getElementById('vodka-card-main');
+    const backVodkaBtn = document.getElementById('back-to-menu-vodka');
+
+    if (mainView && vodkaView && vodkaCard && backVodkaBtn){
+      const openVodkaView = (e) => {
+        if (e) e.preventDefault();
+        scrollPosition = window.scrollY;
+        mainView.classList.add('hidden');
+        vodkaView.classList.remove('hidden');
+      };
+
+      const closeVodkaView = (e) => {
+        if (e) e.preventDefault();
+        vodkaView.classList.add('hidden');
+        mainView.classList.remove('hidden');
+        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+      };
+
+      if (vodkaCard) vodkaCard.addEventListener('click', openVodkaView);
+      backVodkaBtn.addEventListener('click', closeVodkaView);
+    }
+
+    /* ==== MAIN <-> SOFT DRINK ==== */
+    const softdrinkView = document.getElementById('softdrink-view');
+    const softdrinkCard = document.querySelector('[data-section="softdrink"]');
+    const backSoftdrinkBtn = document.getElementById('back-to-menu-softdrink');
+
+    if (mainView && softdrinkView && softdrinkCard && backSoftdrinkBtn){
+      const openSoftdrinkView = (e) => {
+        if (e) e.preventDefault();
+        scrollPosition = window.scrollY;
+        mainView.classList.add('hidden');
+        softdrinkView.classList.remove('hidden');
+      };
+
+      const closeSoftdrinkView = (e) => {
+        if (e) e.preventDefault();
+        softdrinkView.classList.add('hidden');
+        mainView.classList.remove('hidden');
+        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+      };
+
+      softdrinkCard.addEventListener('click', openSoftdrinkView);
+      backSoftdrinkBtn.addEventListener('click', closeSoftdrinkView);
+    }
+
+    /* ==== MAIN <-> GIN ==== */
+    const ginView = document.getElementById('gin-view');
+    const ginCard = document.getElementById('gin-card-main');
+    const backGinBtn = document.getElementById('back-to-menu-gin');
+
+    if (mainView && ginView && ginCard && backGinBtn){
+      const openGinView = (e) => {
+        if (e) e.preventDefault();
+        scrollPosition = window.scrollY;
+        mainView.classList.add('hidden');
+        ginView.classList.remove('hidden');
+      };
+
+      const closeGinView = (e) => {
+        if (e) e.preventDefault();
+        ginView.classList.add('hidden');
+        mainView.classList.remove('hidden');
+        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+      };
+
+      ginCard.addEventListener('click', openGinView);
+      backGinBtn.addEventListener('click', closeGinView);
+    }
+
+    /* ==== MAIN <-> VINI ==== */
+    const viniView = document.getElementById('vini-view');
+    const viniCard = document.getElementById('vini-card-main');
+    const backViniBtn = document.getElementById('back-to-menu-vini');
+
+    if (mainView && viniView && viniCard && backViniBtn){
+      const openViniView = (e) => {
+        if (e) e.preventDefault();
+        scrollPosition = window.scrollY;
+        mainView.classList.add('hidden');
+        viniView.classList.remove('hidden');
+      };
+
+      const closeViniView = (e) => {
+        if (e) e.preventDefault();
+        viniView.classList.add('hidden');
+        mainView.classList.remove('hidden');
+        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+      };
+
+      viniCard.addEventListener('click', openViniView);
+      backViniBtn.addEventListener('click', closeViniView);
+    }
+
+    /* ==== MAIN <-> BIRRE ==== */
+    const birreView = document.getElementById('birre-view');
+    const birreCard = document.getElementById('birre-card-main');
+    const backBirreBtn = document.getElementById('back-to-menu-birre');
+
+    if (mainView && birreView && birreCard && backBirreBtn){
+      const openBirreView = (e) => {
+        if (e) e.preventDefault();
+        scrollPosition = window.scrollY;
+        mainView.classList.add('hidden');
+        birreView.classList.remove('hidden');
+      };
+
+      const closeBirreView = (e) => {
+        if (e) e.preventDefault();
+        birreView.classList.add('hidden');
+        mainView.classList.remove('hidden');
+        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+      };
+
+      birreCard.addEventListener('click', openBirreView);
+      backBirreBtn.addEventListener('click', closeBirreView);
+    }
+
+    /* ==== MAIN <-> TEQUILA ==== */
+    const tequilaView = document.getElementById('tequila-view');
+    const tequilaCard = document.getElementById('tequila-card-main');
+    const backTequilaBtn = document.getElementById('back-to-menu-tequila');
+
+    if (mainView && tequilaView && tequilaCard && backTequilaBtn){
+      const openTequilaView = (e) => {
+        if (e) e.preventDefault();
+        scrollPosition = window.scrollY;
+        mainView.classList.add('hidden');
+        tequilaView.classList.remove('hidden');
+      };
+
+      const closeTequilaView = (e) => {
+        if (e) e.preventDefault();
+        tequilaView.classList.add('hidden');
+        mainView.classList.remove('hidden');
+        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+      };
+
+      tequilaCard.addEventListener('click', openTequilaView);
+      backTequilaBtn.addEventListener('click', closeTequilaView);
+    }
+
+    /* ==== MAIN <-> COGNAC ==== */
+    const cognacView = document.getElementById('cognac-view');
+    const cognacCard = document.getElementById('cognac-card-main');
+    const backCognacBtn = document.getElementById('back-to-menu-cognac');
+
+    if (mainView && cognacView && cognacCard && backCognacBtn){
+      const openCognacView = (e) => {
+        if (e) e.preventDefault();
+        scrollPosition = window.scrollY;
+        mainView.classList.add('hidden');
+        cognacView.classList.remove('hidden');
+      };
+
+      const closeCognacView = (e) => {
+        if (e) e.preventDefault();
+        cognacView.classList.add('hidden');
+        mainView.classList.remove('hidden');
+        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+      };
+
+      cognacCard.addEventListener('click', openCognacView);
+      backCognacBtn.addEventListener('click', closeCognacView);
+    }
+
+    /* ==== TABS FOOD ==== */
+    window.openFoodTab = function(tabName){
+      const tabs = document.querySelectorAll('#food-view .tab');
+      const contents = document.querySelectorAll('#food-view .content');
+
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
+
+      const activeTab = document.querySelector(`#food-view .tab[onclick="openFoodTab('${tabName}')"]`);
+      const activeContent = document.querySelector(`#food-view #${tabName}`);
+
+      if (activeTab) activeTab.classList.add('active');
+      if (activeContent) activeContent.classList.add('active');
+    };
+
+    /* ==== TABS WHISKY ==== */
+    window.openWhiskyTab = function(tabName){
+      const tabs = document.querySelectorAll('#whisky-view .tab');
+      const contents = document.querySelectorAll('#whisky-view .content');
+
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
+
+      const activeTab = document.querySelector(`#whisky-view .tab[onclick="openWhiskyTab('${tabName}')"]`);
+      const activeContent = document.querySelector(`#whisky-view #${tabName}`);
+
+      if (activeTab) activeTab.classList.add('active');
+      if (activeContent) activeContent.classList.add('active');
+    };
+
+    /* ==== TABS AMARI ==== */
+    window.openAmariTab = function(tabName){
+      const tabs = document.querySelectorAll('#amari-view .tab');
+      const contents = document.querySelectorAll('#amari-view .content');
+
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
+
+      const activeTab = document.querySelector(`#amari-view .tab[onclick="openAmariTab('${tabName}')"]`);
+      const activeContent = document.querySelector(`#amari-view #${tabName}`);
+
+      if (activeTab) activeTab.classList.add('active');
+      if (activeContent) activeContent.classList.add('active');
+    };
+
+    /* ==== TABS COGNAC ==== */
+    window.openCognacTab = function(tabId) {
+      // togli "active" da tutte le tab del cognac
+      document.querySelectorAll('#cognac-view .tab').forEach(t => t.classList.remove('active'));
+      // togli "active" da tutti i contenuti del cognac
+      document.querySelectorAll('#cognac-view .content').forEach(c => c.classList.remove('active'));
+
+      // aggiungi active alla tab cliccata
+      document.querySelector(`#cognac-view .tab[onclick="openCognacTab('${tabId}')"]`).classList.add('active');
+      // mostra il contenuto giusto
+      document.getElementById(tabId).classList.add('active');
+    };
+
+    /* ==== TABS GIN ==== */
+    /* ==== TABS RUM ==== */
+    window.openRumTab = function(tabName){
+      const tabs = document.querySelectorAll('#rum-view .tab');
+      const contents = document.querySelectorAll('#rum-view .content');
+
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
+
+      const activeTab = document.querySelector(`#rum-view .tab[onclick="openRumTab('${tabName}')"]`);
+      const activeContent = document.querySelector(`#rum-view #${tabName}`);
+
+      if (activeTab) activeTab.classList.add('active');
+      if (activeContent) activeContent.classList.add('active');
+    };
+
+    window.openGinTab = function(tabName){
+      const tabs = document.querySelectorAll('#gin-view .tab');
+      const contents = document.querySelectorAll('#gin-view .content');
+
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
+
+      const activeTab = document.querySelector(`#gin-view .tab[onclick="openGinTab('${tabName}')"]`);
+      const activeContent = document.querySelector(`#gin-view #${tabName}`);
+
+      if (activeTab) activeTab.classList.add('active');
+      if (activeContent) activeContent.classList.add('active');
+    };
+
+    /* ==== TABS VINI ==== */
+    window.openViniTab = function(tabName){
+      const tabs = document.querySelectorAll('#vini-view .tab');
+      const contents = document.querySelectorAll('#vini-view .content');
+
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
+
+      const activeTab = document.querySelector(`#vini-view .tab[onclick="openViniTab('${tabName}')"]`);
+      const activeContent = document.querySelector(`#vini-view #${tabName}`);
+
+      if (activeTab) activeTab.classList.add('active');
+      if (activeContent) activeContent.classList.add('active');
+    };
+
+    /* ==== TABS TEQUILA ==== */
+    window.openTequilaTab = function(tabName){
+      const tabs = document.querySelectorAll('#tequila-view .tab');
+      const contents = document.querySelectorAll('#tequila-view .content');
+
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
+
+      const activeTab = document.querySelector(`#tequila-view .tab[onclick="openTequilaTab('${tabName}')"]`);
+      const activeContent = document.querySelector(`#tequila-view #${tabName}`);
+
+      if (activeTab) activeTab.classList.add('active');
+      if (activeContent) activeContent.classList.add('active');
+    };
+
+  });
+  </script>
+
+</body>
+</html>
