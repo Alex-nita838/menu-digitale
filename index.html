@@ -2417,6 +2417,16 @@
 
   <script>
   document.addEventListener("DOMContentLoaded", () => {
+    /* ===== GESTIONE NAVIGAZIONE BROWSER ===== */
+    let currentView = 'main';
+    let backPressCount = 0;
+
+    // Aggiungi uno stato iniziale per il menu principale
+    history.replaceState({ view: 'main' }, '', '');
+    
+    // Aggiungi un secondo stato per richiedere doppia pressione
+    history.pushState({ view: 'main' }, '', '');
+
     /* ===== CAROUSEL IN PRIMO PIANO ===== */
     const track = document.querySelector(".featured-track");
     const dotsWrap = document.querySelector(".featured-dots");
@@ -2508,12 +2518,16 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         meravigliView.classList.remove('hidden');
+        currentView = '7meraviglie';
+        history.pushState({ view: '7meraviglie' }, '', '');
       });
 
       backMeravigliBtn.addEventListener('click', () => {
         meravigliView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+        currentView = 'main';
+        history.back();
       });
     }
 
@@ -2527,12 +2541,16 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         spritzView.classList.remove('hidden');
+        currentView = 'spritz';
+        history.pushState({ view: 'spritz' }, '', '');
       });
 
       backSpritzBtn.addEventListener('click', () => {
         spritzView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+        currentView = 'main';
+        history.back();
       });
     }
 
@@ -2546,12 +2564,16 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         analcolicView.classList.remove('hidden');
+        currentView = 'analcolici';
+        history.pushState({ view: 'analcolici' }, '', '');
       });
 
       backAnalcolicBtn.addEventListener('click', () => {
         analcolicView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+        currentView = 'main';
+        history.back();
       });
     }
 
@@ -2566,6 +2588,8 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         foodView.classList.remove('hidden');
+        currentView = 'food';
+        history.pushState({ view: 'food' }, '', '');
       };
 
       const closeFood = (e) => {
@@ -2573,6 +2597,8 @@
         foodView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+        currentView = 'main';
+        history.back();
       };
 
       foodCard.addEventListener('click', openFood);
@@ -2590,6 +2616,8 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         whiskyView.classList.remove('hidden');
+        currentView = 'whisky';
+        history.pushState({ view: 'whisky' }, '', '');
       };
 
       const closeWhiskyView = (e) => {
@@ -2597,6 +2625,8 @@
         whiskyView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+        currentView = 'main';
+        history.back();
       };
 
       whiskyCard.addEventListener('click', openWhiskyView);
@@ -2615,6 +2645,8 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         amariView.classList.remove('hidden');
+        currentView = 'amari';
+        history.pushState({ view: 'amari' }, '', '');
       };
 
       const closeAmariView = (e) => {
@@ -2622,6 +2654,8 @@
         amariView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+        currentView = 'main';
+        history.back();
       };
 
       amariCard.addEventListener('click', openAmariView);
@@ -2639,6 +2673,8 @@
           scrollPosition = window.scrollY;
           mainView.classList.add('hidden');
           rumView.classList.remove('hidden');
+          currentView = 'rum';
+          history.pushState({ view: 'rum' }, '', '');
         };
 
         const closeRumView = (e) => {
@@ -2646,6 +2682,8 @@
           rumView.classList.add('hidden');
           mainView.classList.remove('hidden');
           window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+          currentView = 'main';
+          history.back();
         };
 
         if (rumCard) rumCard.addEventListener('click', openRumView);
@@ -2663,6 +2701,8 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         vodkaView.classList.remove('hidden');
+        currentView = 'vodka';
+        history.pushState({ view: 'vodka' }, '', '');
       };
 
       const closeVodkaView = (e) => {
@@ -2670,6 +2710,8 @@
         vodkaView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+        currentView = 'main';
+        history.back();
       };
 
       if (vodkaCard) vodkaCard.addEventListener('click', openVodkaView);
@@ -2687,6 +2729,8 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         softdrinkView.classList.remove('hidden');
+        currentView = 'softdrink';
+        history.pushState({ view: 'softdrink' }, '', '');
       };
 
       const closeSoftdrinkView = (e) => {
@@ -2694,6 +2738,8 @@
         softdrinkView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+        currentView = 'main';
+        history.back();
       };
 
       softdrinkCard.addEventListener('click', openSoftdrinkView);
@@ -2711,6 +2757,8 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         ginView.classList.remove('hidden');
+        currentView = 'gin';
+        history.pushState({ view: 'gin' }, '', '');
       };
 
       const closeGinView = (e) => {
@@ -2718,6 +2766,8 @@
         ginView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+        currentView = 'main';
+        history.back();
       };
 
       ginCard.addEventListener('click', openGinView);
@@ -2735,6 +2785,8 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         viniView.classList.remove('hidden');
+        currentView = 'vini';
+        history.pushState({ view: 'vini' }, '', '');
       };
 
       const closeViniView = (e) => {
@@ -2742,6 +2794,8 @@
         viniView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+        currentView = 'main';
+        history.back();
       };
 
       viniCard.addEventListener('click', openViniView);
@@ -2759,6 +2813,8 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         birreView.classList.remove('hidden');
+        currentView = 'birre';
+        history.pushState({ view: 'birre' }, '', '');
       };
 
       const closeBirreView = (e) => {
@@ -2766,6 +2822,8 @@
         birreView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+        currentView = 'main';
+        history.back();
       };
 
       birreCard.addEventListener('click', openBirreView);
@@ -2783,6 +2841,8 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         tequilaView.classList.remove('hidden');
+        currentView = 'tequila';
+        history.pushState({ view: 'tequila' }, '', '');
       };
 
       const closeTequilaView = (e) => {
@@ -2790,6 +2850,8 @@
         tequilaView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+        currentView = 'main';
+        history.back();
       };
 
       tequilaCard.addEventListener('click', openTequilaView);
@@ -2807,6 +2869,8 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         cognacView.classList.remove('hidden');
+        currentView = 'cognac';
+        history.pushState({ view: 'cognac' }, '', '');
       };
 
       const closeCognacView = (e) => {
@@ -2814,6 +2878,8 @@
         cognacView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+        currentView = 'main';
+        history.back();
       };
 
       cognacCard.addEventListener('click', openCognacView);
@@ -2937,6 +3003,28 @@
       if (activeTab) activeTab.classList.add('active');
       if (activeContent) activeContent.classList.add('active');
     };
+
+    /* ===== GESTIONE TASTO INDIETRO DEL BROWSER ===== */
+    window.addEventListener('popstate', (event) => {
+      const state = event.state;
+      
+      // Se siamo in una sezione (non main), torna al menu principale
+      if (currentView !== 'main') {
+        // Nascondi tutte le sezioni
+        document.querySelectorAll('.view:not(#main-view)').forEach(view => {
+          view.classList.add('hidden');
+        });
+        
+        // Mostra il menu principale
+        mainView.classList.remove('hidden');
+        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
+        currentView = 'main';
+      }
+      // Se siamo già nel menu principale e premi indietro, ripristina lo stato per richiedere doppio clic
+      else if (state && state.view === 'main') {
+        history.pushState({ view: 'main' }, '', '');
+      }
+    });
 
   });
   </script>
