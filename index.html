@@ -119,6 +119,10 @@
       cursor:pointer;
     }
 
+    .featured-card.art-seduction{
+      background-position:center -150px;
+    }
+
     .featured-card::after{
       content:"";
       position:absolute;
@@ -925,11 +929,52 @@
 
     /* BIRRE VIEW */
     #birre-view .content{
+      display:none;
       padding:20px 0;
       max-width:700px;
       width:100%;
       margin:0 auto;
       animation: foodFadeIn 0.4s ease;
+    }
+
+    #birre-view .content.active{
+      display:block;
+    }
+
+    #birre-view .tabs{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:6px;
+      width:100%;
+      padding:8px 0;
+      border-bottom:2px solid #222;
+    }
+
+    #birre-view .tab{
+      flex:1 1 calc(50% - 12px);
+      min-width:160px;
+      padding:10px 0;
+      margin:2px;
+      background:none;
+      border:none;
+      color:#fff;
+      font-family:'Oswald',sans-serif;
+      font-size:0.95rem;
+      letter-spacing:1px;
+      cursor:pointer;
+      border-bottom:2px solid transparent;
+      transition:.3s;
+      text-align:center;
+    }
+
+    #birre-view .tab.active{
+      border-bottom:2px solid var(--accent);
+      color:var(--accent);
+    }
+
+    #birre-view .tab:hover{
+      color:var(--accent);
     }
 
     #birre-view .section-title{
@@ -1189,10 +1234,10 @@
 
   <!-- ========== LOGO ========== -->
   <div class="logo">
-    <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1747947048/NOMAD_LOGO_2_1_yokhs8.jpg" alt="NOMAD">
+    <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1773152638/New_hero_banner_nomad_zgtmow.jpg" alt="NOMAD">
   </div>
 
-  <!-- ========== 7 MERAVIGLIE VIEW ========== -->
+  <!-- ========== THE ART OF SEDUCTION VIEW ========== -->
   <div id="meraviglie-view" class="view hidden">
     <div class="meraviglie-header">
         <button class="back-button" id="back-meraviglie">
@@ -1201,15 +1246,19 @@
         <div class="panel-logo"><img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1739885813/NOMAD_logo_j0ahay.png" alt="NOMAD"></div>
     </div>
     <div class="meraviglie-gallery">
-      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1768931250/7_1_Descrizione_jri5sp.jpg" alt="Meraviglia 1">
-      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1768931250/Abraco_oxx1aw.jpg" alt="Meraviglia 2">
-      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1768931250/BAI_LONG_er4qqk.jpg" alt="Meraviglia 3">
-      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1768931252/Gladiatore_mqv5o8.jpg" alt="Meraviglia 4">
-      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1768931253/INTI_zwxnh7.jpg" alt="Meraviglia 5">
-      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1768931249/KUKULKAN_en8py3.jpg" alt="Meraviglia 6">
-      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1768931249/NABATEA_m4nqsu.jpg" alt="Meraviglia 7">
-      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1768931249/SAMSARA_zjscfi.jpg" alt="Meraviglia 8">
-      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1768931249/NOMAD_o43i8i.jpg" alt="Meraviglia 9">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1773151595/0_introduzione_w5y0jb.jpg" alt="The Art of Seduction 1">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1773151597/1_naked_kiss_tp83ml.jpg" alt="The Art of Seduction 2">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1773151600/2_soft_tease_liamkc.jpg" alt="The Art of Seduction 3">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1773151624/3_red_flag_dqqq9j.jpg" alt="The Art of Seduction 4">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1773151604/4_Midnight_dm_ufsrhl.jpg" alt="The Art of Seduction 5">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1773151582/5_sinnerman_jp28tf.jpg" alt="The Art of Seduction 6">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1773151583/6_last_seen_p70r1i.jpg" alt="The Art of Seduction 7">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1773151584/7_more_passion_more_power_gkgnkr.jpg" alt="The Art of Seduction 8">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1773151586/8_golden_temtetion_puabqu.jpg" alt="The Art of Seduction 9">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1773151587/8_velved_heat_agitrw.jpg" alt="The Art of Seduction 10">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1773151589/9_swipe_right_qtmeag.jpg" alt="The Art of Seduction 11">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1773151591/10_allergeni_cphyz1.jpg" alt="The Art of Seduction 12">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1773151592/11_chiusura_hqcld8.jpg" alt="The Art of Seduction 13">
     </div>
   </div>
 
@@ -1263,8 +1312,7 @@
       <div class="section-subtitle">Le selezioni signature del NOMAD</div>
 
       <div class="featured-track">
-        <div class="featured-card" data-section="7meraviglie" style="background-image:url('https://res.cloudinary.com/dwalnukl0/image/upload/v1747947048/Odyssey_hxwjpf.jpg')">
-          <div class="featured-label">7 Meraviglie</div>
+        <div class="featured-card art-seduction" data-section="7meraviglie" style="background-image:url('https://res.cloudinary.com/dwalnukl0/image/upload/v1773151596/cover_eviyra.jpg');">
         </div>
 
         <div class="featured-card" data-section="spritz" style="background-image:url('https://res.cloudinary.com/dwalnukl0/image/upload/v1769009733/Copertina_spritz_nuuqrj.png')">
@@ -2157,19 +2205,56 @@
         <h1>🍺 NOMAD – BIRRE</h1>
       </div>
 
-      <div class="content">
-        <h2 class="section-title">SELEZIONE BIRRE IN BOTTIGLIA</h2>
+      <div class="tabs">
+        <button class="tab active" onclick="openBirreTab('birre_draft')">SPINA / DRAFT</button>
+        <button class="tab" onclick="openBirreTab('birre_bottle')">BOTTIGLIA / BOTTLE</button>
+      </div>
+
+      <div id="birre_draft" class="content active">
+        <h2 class="section-title">SPINA / DRAFT</h2>
 
         <table>
-          <tr><th>Birra</th><th>Prezzo</th></tr>
+          <tr><th>Birra</th><th>Prezzi</th></tr>
 
           <tr>
             <td>
-              <strong>THERESIANER – PILS • 5.0°</strong><br>
-              <span class="details">Stile: Pilsner | Fermentazione: Bassa<br>Punto d’amaro: 33 IBU | Provenienza: Trieste (ITA)<br>33cl</span>
+              <strong>BIRRA CASTELLO – ORIGINAL LAGER • 5,0% ABV</strong><br>
+              <span class="details">Stile: Lager (bassa fermentazione) | Provenienza: Udine, Italia<br>Amaro: Moderato | Colore: Dorato, limpido<br>Caratteristiche: Colore dorato brillante con schiuma bianca e soffice. Gusto equilibrato, fresco e armonioso, con gradevole nota luppolata e bevuta scorrevole.</span>
             </td>
-            <td class="price">5,00 €</td>
+            <td class="price">0,2 L – 3 €<br>0,4 L – 6 €</td>
           </tr>
+
+          <tr>
+            <td>
+              <strong>DOLOMITI – NON FILTRATA 1897 • 5,8% ABV</strong><br>
+              <span class="details">Stile: Lager Non Filtrata (bassa fermentazione) | Provenienza: Pedavena (BL), Italia<br>Amaro: 22 EBU | Colore: Oro caldo<br>Caratteristiche: Aspetto velato, schiuma cremosa e persistente. Gusto rotondo con leggere note fruttate e amaro equilibrato.</span>
+            </td>
+            <td class="price">0,2 L – 4 €<br>0,4 L – 6 €</td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>BALADIN – NAZIONALE • 6,5% ABV</strong><br>
+              <span class="details">Stile: Belgian Ale con spezie e agrumi | Provenienza: Piozzo (CN), Italia<br>Amaro: 30–32 IBU | Colore: 10–12 EBC<br>Caratteristiche: Birra pulita e beverina, con note di cereale, luppolo e marcata secchezza.</span>
+            </td>
+            <td class="price">0,4 L – 6 €</td>
+          </tr>
+
+          <tr>
+            <td>
+              <strong>CANEDIGUERRA – AMERICAN IPA • 6,7% ABV</strong><br>
+              <span class="details">Stile: American IPA | Provenienza: Alessandria, Italia<br>Amaro: 70 IBU | Colore: 16 EBC – Ambrato<br>Caratteristiche: Aroma intenso fruttato e resinoso. Amaro elevato, bilanciato da una base leggermente maltata.</span>
+            </td>
+            <td class="price">0,5 L – 7 €</td>
+          </tr>
+        </table>
+      </div>
+
+      <div id="birre_bottle" class="content">
+        <h2 class="section-title">BOTTIGLIA / BOTTLE</h2>
+
+        <table>
+          <tr><th>Birra</th><th>Prezzo</th></tr>
 
           <tr>
             <td>
@@ -2181,24 +2266,8 @@
 
           <tr>
             <td>
-              <strong>FIRESTONE WALKER – HOPNOSIS • 6.7°</strong><br>
-              <span class="details">Stile: American IPA | Fermentazione: Alta<br>Punto d’amaro: 45 IBU | Provenienza: California (USA)<br>35,5cl</span>
-            </td>
-            <td class="price">7,00 €</td>
-          </tr>
-
-          <tr>
-            <td>
-              <strong>BUDWEISER – LAGER • 5.0°</strong><br>
-              <span class="details">Stile: Lager | Fermentazione: Bassa<br>Punto d’amaro: 12 IBU | Provenienza: USA<br>33cl</span>
-            </td>
-            <td class="price">5,00 €</td>
-          </tr>
-
-          <tr>
-            <td>
-              <strong>DAMM – INEDIT • 4.8°</strong><br>
-              <span class="details">Stile: Blanche | Fermentazione: Alta<br>Punto d’amaro: 21 IBU | Provenienza: Spagna<br>33cl</span>
+              <strong>THERESIANER – IPA • 5.8°</strong><br>
+              <span class="details">Stile: Ipa | Fermentazione: Alta<br>Punto d’amaro: 35 IBU | Provenienza: Trieste (ITA)<br>33cl</span>
             </td>
             <td class="price">5,00 €</td>
           </tr>
@@ -2207,14 +2276,6 @@
             <td>
               <strong>KLOSTER SCHEYERN – WEISSE HELL • 5.2°</strong><br>
               <span class="details">Stile: Hefeweiss | Fermentazione: Alta<br>Punto d’amaro: 12 IBU | Provenienza: Baviera (D)<br>50cl</span>
-            </td>
-            <td class="price">7,00 €</td>
-          </tr>
-
-          <tr>
-            <td>
-              <strong>FIRESTONE WALKER – UNION JACK • 7.5°</strong><br>
-              <span class="details">Stile: American IPA | Fermentazione: Alta<br>Punto d’amaro: 70 IBU | Provenienza: California (USA)<br>35,5cl</span>
             </td>
             <td class="price">7,00 €</td>
           </tr>
@@ -2417,16 +2478,6 @@
 
   <script>
   document.addEventListener("DOMContentLoaded", () => {
-    /* ===== GESTIONE NAVIGAZIONE BROWSER ===== */
-    let currentView = 'main';
-    let backPressCount = 0;
-
-    // Aggiungi uno stato iniziale per il menu principale
-    history.replaceState({ view: 'main' }, '', '');
-    
-    // Aggiungi un secondo stato per richiedere doppia pressione
-    history.pushState({ view: 'main' }, '', '');
-
     /* ===== CAROUSEL IN PRIMO PIANO ===== */
     const track = document.querySelector(".featured-track");
     const dotsWrap = document.querySelector(".featured-dots");
@@ -2518,16 +2569,12 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         meravigliView.classList.remove('hidden');
-        currentView = '7meraviglie';
-        history.pushState({ view: '7meraviglie' }, '', '');
       });
 
       backMeravigliBtn.addEventListener('click', () => {
         meravigliView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-        currentView = 'main';
-        history.back();
       });
     }
 
@@ -2541,16 +2588,12 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         spritzView.classList.remove('hidden');
-        currentView = 'spritz';
-        history.pushState({ view: 'spritz' }, '', '');
       });
 
       backSpritzBtn.addEventListener('click', () => {
         spritzView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-        currentView = 'main';
-        history.back();
       });
     }
 
@@ -2564,16 +2607,12 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         analcolicView.classList.remove('hidden');
-        currentView = 'analcolici';
-        history.pushState({ view: 'analcolici' }, '', '');
       });
 
       backAnalcolicBtn.addEventListener('click', () => {
         analcolicView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-        currentView = 'main';
-        history.back();
       });
     }
 
@@ -2582,14 +2621,22 @@
     const foodCard = document.getElementById('food-card-main');
     const backBtn = document.getElementById('back-to-menu');
 
+    const scrollToHeader = (viewEl) => {
+      if (!viewEl) return;
+      const header = viewEl.querySelector('.food-menu-header');
+      if (!header) return;
+      setTimeout(() => {
+        header.scrollIntoView({ behavior: 'auto', block: 'start' });
+      }, 0);
+    };
+
     if (mainView && foodView && foodCard && backBtn){
       const openFood = (e) => {
         if (e) e.preventDefault();
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         foodView.classList.remove('hidden');
-        currentView = 'food';
-        history.pushState({ view: 'food' }, '', '');
+        scrollToHeader(foodView);
       };
 
       const closeFood = (e) => {
@@ -2597,8 +2644,6 @@
         foodView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-        currentView = 'main';
-        history.back();
       };
 
       foodCard.addEventListener('click', openFood);
@@ -2616,8 +2661,7 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         whiskyView.classList.remove('hidden');
-        currentView = 'whisky';
-        history.pushState({ view: 'whisky' }, '', '');
+        scrollToHeader(whiskyView);
       };
 
       const closeWhiskyView = (e) => {
@@ -2625,8 +2669,6 @@
         whiskyView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-        currentView = 'main';
-        history.back();
       };
 
       whiskyCard.addEventListener('click', openWhiskyView);
@@ -2645,8 +2687,7 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         amariView.classList.remove('hidden');
-        currentView = 'amari';
-        history.pushState({ view: 'amari' }, '', '');
+        scrollToHeader(amariView);
       };
 
       const closeAmariView = (e) => {
@@ -2654,8 +2695,6 @@
         amariView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-        currentView = 'main';
-        history.back();
       };
 
       amariCard.addEventListener('click', openAmariView);
@@ -2673,8 +2712,7 @@
           scrollPosition = window.scrollY;
           mainView.classList.add('hidden');
           rumView.classList.remove('hidden');
-          currentView = 'rum';
-          history.pushState({ view: 'rum' }, '', '');
+          scrollToHeader(rumView);
         };
 
         const closeRumView = (e) => {
@@ -2682,8 +2720,6 @@
           rumView.classList.add('hidden');
           mainView.classList.remove('hidden');
           window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-          currentView = 'main';
-          history.back();
         };
 
         if (rumCard) rumCard.addEventListener('click', openRumView);
@@ -2701,8 +2737,7 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         vodkaView.classList.remove('hidden');
-        currentView = 'vodka';
-        history.pushState({ view: 'vodka' }, '', '');
+        scrollToHeader(vodkaView);
       };
 
       const closeVodkaView = (e) => {
@@ -2710,8 +2745,6 @@
         vodkaView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-        currentView = 'main';
-        history.back();
       };
 
       if (vodkaCard) vodkaCard.addEventListener('click', openVodkaView);
@@ -2729,8 +2762,6 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         softdrinkView.classList.remove('hidden');
-        currentView = 'softdrink';
-        history.pushState({ view: 'softdrink' }, '', '');
       };
 
       const closeSoftdrinkView = (e) => {
@@ -2738,8 +2769,6 @@
         softdrinkView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-        currentView = 'main';
-        history.back();
       };
 
       softdrinkCard.addEventListener('click', openSoftdrinkView);
@@ -2757,8 +2786,7 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         ginView.classList.remove('hidden');
-        currentView = 'gin';
-        history.pushState({ view: 'gin' }, '', '');
+        scrollToHeader(ginView);
       };
 
       const closeGinView = (e) => {
@@ -2766,8 +2794,6 @@
         ginView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-        currentView = 'main';
-        history.back();
       };
 
       ginCard.addEventListener('click', openGinView);
@@ -2785,8 +2811,7 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         viniView.classList.remove('hidden');
-        currentView = 'vini';
-        history.pushState({ view: 'vini' }, '', '');
+        scrollToHeader(viniView);
       };
 
       const closeViniView = (e) => {
@@ -2794,8 +2819,6 @@
         viniView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-        currentView = 'main';
-        history.back();
       };
 
       viniCard.addEventListener('click', openViniView);
@@ -2813,8 +2836,7 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         birreView.classList.remove('hidden');
-        currentView = 'birre';
-        history.pushState({ view: 'birre' }, '', '');
+        scrollToHeader(birreView);
       };
 
       const closeBirreView = (e) => {
@@ -2822,8 +2844,6 @@
         birreView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-        currentView = 'main';
-        history.back();
       };
 
       birreCard.addEventListener('click', openBirreView);
@@ -2841,8 +2861,7 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         tequilaView.classList.remove('hidden');
-        currentView = 'tequila';
-        history.pushState({ view: 'tequila' }, '', '');
+        scrollToHeader(tequilaView);
       };
 
       const closeTequilaView = (e) => {
@@ -2850,8 +2869,6 @@
         tequilaView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-        currentView = 'main';
-        history.back();
       };
 
       tequilaCard.addEventListener('click', openTequilaView);
@@ -2869,8 +2886,7 @@
         scrollPosition = window.scrollY;
         mainView.classList.add('hidden');
         cognacView.classList.remove('hidden');
-        currentView = 'cognac';
-        history.pushState({ view: 'cognac' }, '', '');
+        scrollToHeader(cognacView);
       };
 
       const closeCognacView = (e) => {
@@ -2878,8 +2894,6 @@
         cognacView.classList.add('hidden');
         mainView.classList.remove('hidden');
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-        currentView = 'main';
-        history.back();
       };
 
       cognacCard.addEventListener('click', openCognacView);
@@ -2926,6 +2940,21 @@
 
       const activeTab = document.querySelector(`#amari-view .tab[onclick="openAmariTab('${tabName}')"]`);
       const activeContent = document.querySelector(`#amari-view #${tabName}`);
+
+      if (activeTab) activeTab.classList.add('active');
+      if (activeContent) activeContent.classList.add('active');
+    };
+
+    /* ==== TABS BIRRE ==== */
+    window.openBirreTab = function(tabName){
+      const tabs = document.querySelectorAll('#birre-view .tab');
+      const contents = document.querySelectorAll('#birre-view .content');
+
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
+
+      const activeTab = document.querySelector(`#birre-view .tab[onclick="openBirreTab('${tabName}')"]`);
+      const activeContent = document.querySelector(`#birre-view #${tabName}`);
 
       if (activeTab) activeTab.classList.add('active');
       if (activeContent) activeContent.classList.add('active');
@@ -3003,28 +3032,6 @@
       if (activeTab) activeTab.classList.add('active');
       if (activeContent) activeContent.classList.add('active');
     };
-
-    /* ===== GESTIONE TASTO INDIETRO DEL BROWSER ===== */
-    window.addEventListener('popstate', (event) => {
-      const state = event.state;
-      
-      // Se siamo in una sezione (non main), torna al menu principale
-      if (currentView !== 'main') {
-        // Nascondi tutte le sezioni
-        document.querySelectorAll('.view:not(#main-view)').forEach(view => {
-          view.classList.add('hidden');
-        });
-        
-        // Mostra il menu principale
-        mainView.classList.remove('hidden');
-        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-        currentView = 'main';
-      }
-      // Se siamo già nel menu principale e premi indietro, ripristina lo stato per richiedere doppio clic
-      else if (state && state.view === 'main') {
-        history.pushState({ view: 'main' }, '', '');
-      }
-    });
 
   });
   </script>
