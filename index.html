@@ -1293,13 +1293,15 @@
         <div class="panel-logo"><img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1739885813/NOMAD_logo_j0ahay.png" alt="NOMAD"></div>
     </div>
     <div class="analcolici-gallery">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1773151587/8_velved_heat_agitrw.jpg" alt="Analcolico 1">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1773151589/9_swipe_right_qtmeag.jpg" alt="Analcolico 2">
       <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769030367/Mediterraneo_ltiuax.png" alt="Analcolico 1">
       <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769030371/Nojito_ly3kts.png" alt="Analcolico 2">
       <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769081007/Shirley_temple_2.0_vauyf9.png" alt="Analcolico 3">
       <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769030368/Virgin_Pina_Colada_nvypea.png" alt="Analcolico 4">
       <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769030369/London_Mule_0.0_pxpu4t.png" alt="Analcolico 5">
-      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769030373/Virgin_Bloody_Mary_ynffti.png" alt="Analcolico 6">
       <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769081015/San_francisco_2.0_ayuwuc.png" alt="Analcolico 7">
+      <img src="https://res.cloudinary.com/dwalnukl0/image/upload/v1769030373/Virgin_Bloody_Mary_ynffti.png" alt="Analcolico 6">
     </div>
   </div>
 
@@ -2558,63 +2560,24 @@
 
     const mainView = document.getElementById('main-view');
     let scrollPosition = 0;
+    let currentViewId = 'main-view';
+    let lastBackPressAt = 0;
+    const DOUBLE_BACK_DELAY = 1800;
 
     /* ==== MAIN <-> 7 MERAVIGLIE ==== */
     const meravigliView = document.getElementById('meraviglie-view');
     const meravigliCard = document.querySelector('[data-section="7meraviglie"]');
     const backMeravigliBtn = document.getElementById('back-meraviglie');
 
-    if (mainView && meravigliView && meravigliCard && backMeravigliBtn){
-      meravigliCard.addEventListener('click', () => {
-        scrollPosition = window.scrollY;
-        mainView.classList.add('hidden');
-        meravigliView.classList.remove('hidden');
-      });
-
-      backMeravigliBtn.addEventListener('click', () => {
-        meravigliView.classList.add('hidden');
-        mainView.classList.remove('hidden');
-        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-      });
-    }
-
     /* ==== MAIN <-> SPRITZ ==== */
     const spritzView = document.getElementById('spritz-view');
     const spritzCard = document.querySelector('[data-section="spritz"]');
     const backSpritzBtn = document.getElementById('back-spritz');
 
-    if (mainView && spritzView && spritzCard && backSpritzBtn){
-      spritzCard.addEventListener('click', () => {
-        scrollPosition = window.scrollY;
-        mainView.classList.add('hidden');
-        spritzView.classList.remove('hidden');
-      });
-
-      backSpritzBtn.addEventListener('click', () => {
-        spritzView.classList.add('hidden');
-        mainView.classList.remove('hidden');
-        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-      });
-    }
-
     /* ==== MAIN <-> ANALCOLICI ==== */
     const analcolicView = document.getElementById('analcolici-view');
     const analcolicCard = document.querySelector('[data-section="analcolici"]');
     const backAnalcolicBtn = document.getElementById('back-analcolici');
-
-    if (mainView && analcolicView && analcolicCard && backAnalcolicBtn){
-      analcolicCard.addEventListener('click', () => {
-        scrollPosition = window.scrollY;
-        mainView.classList.add('hidden');
-        analcolicView.classList.remove('hidden');
-      });
-
-      backAnalcolicBtn.addEventListener('click', () => {
-        analcolicView.classList.add('hidden');
-        mainView.classList.remove('hidden');
-        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-      });
-    }
 
     /* ==== SWITCH VISTA: MAIN <-> FOOD ==== */
     const foodView = document.getElementById('food-view');
@@ -2630,275 +2593,162 @@
       }, 0);
     };
 
-    if (mainView && foodView && foodCard && backBtn){
-      const openFood = (e) => {
-        if (e) e.preventDefault();
-        scrollPosition = window.scrollY;
-        mainView.classList.add('hidden');
-        foodView.classList.remove('hidden');
-        scrollToHeader(foodView);
-      };
+    const getSecondaryViews = () => {
+      return Array.from(document.querySelectorAll('.view')).filter(view => view.id !== 'main-view');
+    };
 
-      const closeFood = (e) => {
-        if (e) e.preventDefault();
-        foodView.classList.add('hidden');
-        mainView.classList.remove('hidden');
+    const showMainMenu = ({ restoreScroll = true } = {}) => {
+      getSecondaryViews().forEach(view => view.classList.add('hidden'));
+      mainView.classList.remove('hidden');
+      currentViewId = 'main-view';
+
+      if (restoreScroll) {
         window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-      };
+      }
+    };
 
-      foodCard.addEventListener('click', openFood);
-      backBtn.addEventListener('click', closeFood);
-    }
+    const showSectionView = (viewEl, { scrollHeaderOnOpen = false } = {}) => {
+      if (!viewEl) return;
+
+      getSecondaryViews().forEach(view => {
+        if (view !== viewEl) view.classList.add('hidden');
+      });
+
+      mainView.classList.add('hidden');
+      viewEl.classList.remove('hidden');
+      currentViewId = viewEl.id;
+
+      if (scrollHeaderOnOpen) {
+        scrollToHeader(viewEl);
+      }
+    };
+
+    const ensureMainHistoryGuard = () => {
+      history.replaceState({ view: 'main-guard' }, '', window.location.href);
+      history.pushState({ view: 'main-view' }, '', window.location.href);
+    };
+
+    const openSectionView = (viewEl, options = {}) => {
+      scrollPosition = window.scrollY;
+      showSectionView(viewEl, options);
+      history.pushState({ view: viewEl.id }, '', window.location.href);
+      lastBackPressAt = 0;
+    };
+
+    const closeSectionView = (viewEl) => {
+      if (!viewEl) return;
+
+      if ((history.state || {}).view === viewEl.id) {
+        history.back();
+        return;
+      }
+
+      showMainMenu({ restoreScroll: true });
+    };
+
+    const bindViewToggle = ({ triggerEl, viewEl, backEl, scrollHeaderOnOpen = false }) => {
+      if (!mainView || !triggerEl || !viewEl || !backEl) return;
+
+      triggerEl.addEventListener('click', (e) => {
+        if (e) e.preventDefault();
+        openSectionView(viewEl, { scrollHeaderOnOpen });
+      });
+
+      backEl.addEventListener('click', (e) => {
+        if (e) e.preventDefault();
+        closeSectionView(viewEl);
+      });
+    };
+
+    window.addEventListener('popstate', (event) => {
+      const stateView = event.state?.view;
+
+      if (currentViewId !== 'main-view') {
+        showMainMenu({ restoreScroll: true });
+        lastBackPressAt = 0;
+        return;
+      }
+
+      if (stateView === 'main-guard') {
+        const now = Date.now();
+
+        if (now - lastBackPressAt < DOUBLE_BACK_DELAY) {
+          lastBackPressAt = 0;
+          history.back();
+          return;
+        }
+
+        lastBackPressAt = now;
+        history.pushState({ view: 'main-view' }, '', window.location.href);
+      }
+    });
+
+    ensureMainHistoryGuard();
 
     /* ==== MAIN <-> WHISKY ==== */
     const whiskyView = document.getElementById('whisky-view');
     const whiskyCard = document.getElementById('whisky-card-main');
     const backWhiskyBtn = document.getElementById('back-to-menu-whisky');
 
-    if (mainView && whiskyView && whiskyCard && backWhiskyBtn){
-      const openWhiskyView = (e) => {
-        if (e) e.preventDefault();
-        scrollPosition = window.scrollY;
-        mainView.classList.add('hidden');
-        whiskyView.classList.remove('hidden');
-        scrollToHeader(whiskyView);
-      };
-
-      const closeWhiskyView = (e) => {
-        if (e) e.preventDefault();
-        whiskyView.classList.add('hidden');
-        mainView.classList.remove('hidden');
-        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-      };
-
-      whiskyCard.addEventListener('click', openWhiskyView);
-      backWhiskyBtn.addEventListener('click', closeWhiskyView);
-    }
-
-
     /* ==== MAIN <-> AMARI ==== */
     const amariView = document.getElementById('amari-view');
     const amariCard = document.getElementById('amari-card-main');
     const backAmariBtn = document.getElementById('back-to-menu-amari');
 
-    if (mainView && amariView && amariCard && backAmariBtn){
-      const openAmariView = (e) => {
-        if (e) e.preventDefault();
-        scrollPosition = window.scrollY;
-        mainView.classList.add('hidden');
-        amariView.classList.remove('hidden');
-        scrollToHeader(amariView);
-      };
-
-      const closeAmariView = (e) => {
-        if (e) e.preventDefault();
-        amariView.classList.add('hidden');
-        mainView.classList.remove('hidden');
-        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-      };
-
-      amariCard.addEventListener('click', openAmariView);
-      backAmariBtn.addEventListener('click', closeAmariView);
-    }
-
-      /* ==== MAIN <-> RUM ==== */
-      const rumView = document.getElementById('rum-view');
-      const rumCard = document.getElementById('rum-card-main');
-      const backRumBtn = document.getElementById('back-to-menu-rum');
-
-      if (mainView && rumView && rumCard && backRumBtn){
-        const openRumView = (e) => {
-          if (e) e.preventDefault();
-          scrollPosition = window.scrollY;
-          mainView.classList.add('hidden');
-          rumView.classList.remove('hidden');
-          scrollToHeader(rumView);
-        };
-
-        const closeRumView = (e) => {
-          if (e) e.preventDefault();
-          rumView.classList.add('hidden');
-          mainView.classList.remove('hidden');
-          window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-        };
-
-        if (rumCard) rumCard.addEventListener('click', openRumView);
-        backRumBtn.addEventListener('click', closeRumView);
-      }
+    /* ==== MAIN <-> RUM ==== */
+    const rumView = document.getElementById('rum-view');
+    const rumCard = document.getElementById('rum-card-main');
+    const backRumBtn = document.getElementById('back-to-menu-rum');
 
     /* ==== MAIN <-> VODKA ==== */
     const vodkaView = document.getElementById('vodka-view');
     const vodkaCard = document.getElementById('vodka-card-main');
     const backVodkaBtn = document.getElementById('back-to-menu-vodka');
 
-    if (mainView && vodkaView && vodkaCard && backVodkaBtn){
-      const openVodkaView = (e) => {
-        if (e) e.preventDefault();
-        scrollPosition = window.scrollY;
-        mainView.classList.add('hidden');
-        vodkaView.classList.remove('hidden');
-        scrollToHeader(vodkaView);
-      };
-
-      const closeVodkaView = (e) => {
-        if (e) e.preventDefault();
-        vodkaView.classList.add('hidden');
-        mainView.classList.remove('hidden');
-        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-      };
-
-      if (vodkaCard) vodkaCard.addEventListener('click', openVodkaView);
-      backVodkaBtn.addEventListener('click', closeVodkaView);
-    }
-
     /* ==== MAIN <-> SOFT DRINK ==== */
     const softdrinkView = document.getElementById('softdrink-view');
     const softdrinkCard = document.querySelector('[data-section="softdrink"]');
     const backSoftdrinkBtn = document.getElementById('back-to-menu-softdrink');
-
-    if (mainView && softdrinkView && softdrinkCard && backSoftdrinkBtn){
-      const openSoftdrinkView = (e) => {
-        if (e) e.preventDefault();
-        scrollPosition = window.scrollY;
-        mainView.classList.add('hidden');
-        softdrinkView.classList.remove('hidden');
-      };
-
-      const closeSoftdrinkView = (e) => {
-        if (e) e.preventDefault();
-        softdrinkView.classList.add('hidden');
-        mainView.classList.remove('hidden');
-        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-      };
-
-      softdrinkCard.addEventListener('click', openSoftdrinkView);
-      backSoftdrinkBtn.addEventListener('click', closeSoftdrinkView);
-    }
 
     /* ==== MAIN <-> GIN ==== */
     const ginView = document.getElementById('gin-view');
     const ginCard = document.getElementById('gin-card-main');
     const backGinBtn = document.getElementById('back-to-menu-gin');
 
-    if (mainView && ginView && ginCard && backGinBtn){
-      const openGinView = (e) => {
-        if (e) e.preventDefault();
-        scrollPosition = window.scrollY;
-        mainView.classList.add('hidden');
-        ginView.classList.remove('hidden');
-        scrollToHeader(ginView);
-      };
-
-      const closeGinView = (e) => {
-        if (e) e.preventDefault();
-        ginView.classList.add('hidden');
-        mainView.classList.remove('hidden');
-        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-      };
-
-      ginCard.addEventListener('click', openGinView);
-      backGinBtn.addEventListener('click', closeGinView);
-    }
-
     /* ==== MAIN <-> VINI ==== */
     const viniView = document.getElementById('vini-view');
     const viniCard = document.getElementById('vini-card-main');
     const backViniBtn = document.getElementById('back-to-menu-vini');
-
-    if (mainView && viniView && viniCard && backViniBtn){
-      const openViniView = (e) => {
-        if (e) e.preventDefault();
-        scrollPosition = window.scrollY;
-        mainView.classList.add('hidden');
-        viniView.classList.remove('hidden');
-        scrollToHeader(viniView);
-      };
-
-      const closeViniView = (e) => {
-        if (e) e.preventDefault();
-        viniView.classList.add('hidden');
-        mainView.classList.remove('hidden');
-        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-      };
-
-      viniCard.addEventListener('click', openViniView);
-      backViniBtn.addEventListener('click', closeViniView);
-    }
 
     /* ==== MAIN <-> BIRRE ==== */
     const birreView = document.getElementById('birre-view');
     const birreCard = document.getElementById('birre-card-main');
     const backBirreBtn = document.getElementById('back-to-menu-birre');
 
-    if (mainView && birreView && birreCard && backBirreBtn){
-      const openBirreView = (e) => {
-        if (e) e.preventDefault();
-        scrollPosition = window.scrollY;
-        mainView.classList.add('hidden');
-        birreView.classList.remove('hidden');
-        scrollToHeader(birreView);
-      };
-
-      const closeBirreView = (e) => {
-        if (e) e.preventDefault();
-        birreView.classList.add('hidden');
-        mainView.classList.remove('hidden');
-        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-      };
-
-      birreCard.addEventListener('click', openBirreView);
-      backBirreBtn.addEventListener('click', closeBirreView);
-    }
-
     /* ==== MAIN <-> TEQUILA ==== */
     const tequilaView = document.getElementById('tequila-view');
     const tequilaCard = document.getElementById('tequila-card-main');
     const backTequilaBtn = document.getElementById('back-to-menu-tequila');
-
-    if (mainView && tequilaView && tequilaCard && backTequilaBtn){
-      const openTequilaView = (e) => {
-        if (e) e.preventDefault();
-        scrollPosition = window.scrollY;
-        mainView.classList.add('hidden');
-        tequilaView.classList.remove('hidden');
-        scrollToHeader(tequilaView);
-      };
-
-      const closeTequilaView = (e) => {
-        if (e) e.preventDefault();
-        tequilaView.classList.add('hidden');
-        mainView.classList.remove('hidden');
-        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-      };
-
-      tequilaCard.addEventListener('click', openTequilaView);
-      backTequilaBtn.addEventListener('click', closeTequilaView);
-    }
 
     /* ==== MAIN <-> COGNAC ==== */
     const cognacView = document.getElementById('cognac-view');
     const cognacCard = document.getElementById('cognac-card-main');
     const backCognacBtn = document.getElementById('back-to-menu-cognac');
 
-    if (mainView && cognacView && cognacCard && backCognacBtn){
-      const openCognacView = (e) => {
-        if (e) e.preventDefault();
-        scrollPosition = window.scrollY;
-        mainView.classList.add('hidden');
-        cognacView.classList.remove('hidden');
-        scrollToHeader(cognacView);
-      };
-
-      const closeCognacView = (e) => {
-        if (e) e.preventDefault();
-        cognacView.classList.add('hidden');
-        mainView.classList.remove('hidden');
-        window.scrollTo({ top: scrollPosition, behavior: 'auto' });
-      };
-
-      cognacCard.addEventListener('click', openCognacView);
-      backCognacBtn.addEventListener('click', closeCognacView);
-    }
+    bindViewToggle({ triggerEl: meravigliCard, viewEl: meravigliView, backEl: backMeravigliBtn });
+    bindViewToggle({ triggerEl: spritzCard, viewEl: spritzView, backEl: backSpritzBtn });
+    bindViewToggle({ triggerEl: analcolicCard, viewEl: analcolicView, backEl: backAnalcolicBtn });
+    bindViewToggle({ triggerEl: foodCard, viewEl: foodView, backEl: backBtn, scrollHeaderOnOpen: true });
+    bindViewToggle({ triggerEl: whiskyCard, viewEl: whiskyView, backEl: backWhiskyBtn, scrollHeaderOnOpen: true });
+    bindViewToggle({ triggerEl: amariCard, viewEl: amariView, backEl: backAmariBtn, scrollHeaderOnOpen: true });
+    bindViewToggle({ triggerEl: rumCard, viewEl: rumView, backEl: backRumBtn, scrollHeaderOnOpen: true });
+    bindViewToggle({ triggerEl: vodkaCard, viewEl: vodkaView, backEl: backVodkaBtn, scrollHeaderOnOpen: true });
+    bindViewToggle({ triggerEl: softdrinkCard, viewEl: softdrinkView, backEl: backSoftdrinkBtn });
+    bindViewToggle({ triggerEl: ginCard, viewEl: ginView, backEl: backGinBtn, scrollHeaderOnOpen: true });
+    bindViewToggle({ triggerEl: viniCard, viewEl: viniView, backEl: backViniBtn, scrollHeaderOnOpen: true });
+    bindViewToggle({ triggerEl: birreCard, viewEl: birreView, backEl: backBirreBtn, scrollHeaderOnOpen: true });
+    bindViewToggle({ triggerEl: tequilaCard, viewEl: tequilaView, backEl: backTequilaBtn, scrollHeaderOnOpen: true });
+    bindViewToggle({ triggerEl: cognacCard, viewEl: cognacView, backEl: backCognacBtn, scrollHeaderOnOpen: true });
 
     /* ==== TABS FOOD ==== */
     window.openFoodTab = function(tabName){
